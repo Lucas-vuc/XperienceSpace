@@ -2,732 +2,659 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>XperienceSpace — Operational Architecture</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#05080E;--bg2:#080C17;--bg3:#0B1020;--card:#0C1121;--card-h:#101629;
-  --gold:#C9993A;--gold-l:#DFB155;--gold-dim:rgba(201,153,58,.1);--gold-mid:rgba(201,153,58,.28);
-  --t1c:#9B8FDC;--t1-dim:rgba(155,143,220,.1);--t1-mid:rgba(155,143,220,.28);
-  --t2c:#6298D0;--t2-dim:rgba(98,152,208,.1);--t2-mid:rgba(98,152,208,.28);
-  --t3c:#46B4AA;--t3-dim:rgba(70,180,170,.1);--t3-mid:rgba(70,180,170,.28);
-  --tex:#CCC8BE;--tex2:#7A7A6C;--tex3:#3A3A33;--r:7px;--rl:11px;
+  --bg:#05080E;--bg2:#080C17;--bg3:#0B1020;--card:#0C1121;
+  --gold:#C9993A;--gl:#DFB155;--gdim:rgba(201,153,58,.1);--gmid:rgba(201,153,58,.28);
+  --t1c:#9B8FDC;--t1d:rgba(155,143,220,.1);--t1m:rgba(155,143,220,.28);
+  --t2c:#6298D0;--t2d:rgba(98,152,208,.1);--t2m:rgba(98,152,208,.28);
+  --t3c:#46B4AA;--t3d:rgba(70,180,170,.1);--t3m:rgba(70,180,170,.28);
+  --tx:#CCC8BE;--tx2:#7A7A6C;--tx3:#3A3A33;--r:7px;--rl:11px;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tex);font-family:'IBM Plex Sans',sans-serif;font-weight:300;font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
-
-/* STARS */
-.sl{position:fixed;inset:0;pointer-events:none;z-index:0}
-#s1{background:
+body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-weight:300;font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;background:
   radial-gradient(1.2px 1.2px at 6% 5%,rgba(255,255,255,.45) 0%,transparent 100%),
   radial-gradient(1px 1px at 18% 22%,rgba(255,255,255,.28) 0%,transparent 100%),
   radial-gradient(1.5px 1.5px at 33% 10%,rgba(255,255,255,.35) 0%,transparent 100%),
   radial-gradient(1px 1px at 47% 3%,rgba(255,255,255,.22) 0%,transparent 100%),
   radial-gradient(1px 1px at 61% 16%,rgba(255,255,255,.38) 0%,transparent 100%),
   radial-gradient(1.2px 1.2px at 75% 7%,rgba(255,255,255,.26) 0%,transparent 100%),
-  radial-gradient(1px 1px at 88% 13%,rgba(255,255,255,.32) 0%,transparent 100%),
-  radial-gradient(1px 1px at 4% 37%,rgba(255,255,255,.18) 0%,transparent 100%),
   radial-gradient(1px 1px at 15% 51%,rgba(255,255,255,.22) 0%,transparent 100%),
-  radial-gradient(1px 1px at 26% 66%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1px 1px at 42% 43%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(1px 1px at 56% 70%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1px 1px at 69% 57%,rgba(255,255,255,.14) 0%,transparent 100%),
+  radial-gradient(1px 1px at 42% 43%,rgba(255,255,255,.20) 0%,transparent 100%),
   radial-gradient(1px 1px at 83% 38%,rgba(255,255,255,.26) 0%,transparent 100%),
-  radial-gradient(1px 1px at 95% 51%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1px 1px at 10% 78%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(1px 1px at 32% 85%,rgba(255,255,255,.14) 0%,transparent 100%),
-  radial-gradient(1px 1px at 54% 92%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1px 1px at 78% 81%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(2px 2px at 44% 32%,rgba(201,153,58,.14) 0%,transparent 100%),
-  radial-gradient(2px 2px at 72% 76%,rgba(155,143,220,.1) 0%,transparent 100%)}
-#s2{background:
-  radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.1) 0%,transparent 100%),
-  radial-gradient(1px 1px at 24% 63%,rgba(255,255,255,.08) 0%,transparent 100%),
-  radial-gradient(1px 1px at 38% 30%,rgba(255,255,255,.12) 0%,transparent 100%),
-  radial-gradient(1px 1px at 52% 13%,rgba(255,255,255,.08) 0%,transparent 100%),
-  radial-gradient(1px 1px at 65% 42%,rgba(255,255,255,.1) 0%,transparent 100%),
-  radial-gradient(1px 1px at 80% 26%,rgba(255,255,255,.08) 0%,transparent 100%),
-  radial-gradient(1px 1px at 93% 60%,rgba(255,255,255,.1) 0%,transparent 100%),
-  radial-gradient(1px 1px at 7% 88%,rgba(255,255,255,.08) 0%,transparent 100%),
-  radial-gradient(1px 1px at 68% 93%,rgba(255,255,255,.1) 0%,transparent 100%)}
-.aurora{position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:130%;height:50%;background:radial-gradient(ellipse at 50% 0%,rgba(80,70,170,.05) 0%,rgba(25,40,110,.025) 40%,transparent 70%);pointer-events:none;z-index:0}
-
-/* PAGE */
+  radial-gradient(2px 2px at 44% 32%,rgba(201,153,58,.14) 0%,transparent 100%)}
+.aurora{position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:130%;height:50%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(80,70,170,.05) 0%,rgba(25,40,110,.025) 40%,transparent 70%);
+  pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:52px 28px 80px}
-
-/* HEADER */
-header{text-align:center;margin-bottom:40px;padding-bottom:36px;border-bottom:.5px solid rgba(201,153,58,.1)}
-.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:.75}
-h1{font-family:'Syne',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:700;letter-spacing:-.01em;color:#EAE5D8;line-height:1;margin-bottom:6px}
-h1 em{font-style:normal;color:var(--gold-l)}
-.h-divider{width:44px;height:.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 12px}
-.h-sub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tex2)}
-
-/* VIEW CONTROLS */
-.vctrls{display:flex;justify-content:center;gap:6px;margin-bottom:28px}
-.vbtn{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:8px 20px;border-radius:4px;cursor:pointer;border:.5px solid var(--tex3);background:transparent;color:var(--tex2);transition:all .18s}
-.vbtn:hover{border-color:var(--tex2);color:var(--tex)}
-.vbtn.active{background:var(--gold-dim);border-color:var(--gold-mid);color:var(--gold-l)}
-
-/* SOLAR VIEW */
+header{text-align:center;margin-bottom:36px;padding-bottom:32px;border-bottom:.5px solid rgba(201,153,58,.1)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;opacity:.75}
+h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:700;color:#EAE5D8;line-height:1;margin-bottom:6px}
+h1 em{font-style:normal;color:var(--gl)}
+.hdiv{width:44px;height:.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px auto 10px}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2)}
+.vctrls{display:flex;justify-content:center;gap:6px;margin-bottom:28px;flex-wrap:wrap}
+.vbtn{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 18px;border-radius:4px;cursor:pointer;border:.5px solid var(--tx3);background:transparent;color:var(--tx2);transition:all .18s}
+.vbtn:hover{border-color:var(--tx2);color:var(--tx)}
+.vbtn.active{background:var(--gdim);border-color:var(--gmid);color:var(--gl)}
+/* SOLAR */
 #solar-view{position:relative;border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05)}
 #solar-canvas{display:block;width:100%}
-.canvas-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:rgba(255,255,255,.18);white-space:nowrap;pointer-events:none}
-.canvas-legend{position:absolute;bottom:16px;right:18px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
-.cl-item{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;color:rgba(180,176,164,.5)}
-.cl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-
-/* LIST VIEW */
+.chint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;letter-spacing:.12em;color:rgba(255,255,255,.18);white-space:nowrap;pointer-events:none}
+.cleg{position:absolute;bottom:16px;right:18px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.cli{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;color:rgba(180,176,164,.5)}
+.cld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* ORG CHART */
 #list-view{display:none}
-.tier-section{margin-bottom:0}
-.tier-label{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:10px}
-.tier-label::after{content:'';flex:1;height:.5px;background:linear-gradient(90deg,currentColor,transparent);opacity:.25}
-.tl-exec{color:var(--gold)}.tl-t1{color:var(--t1c)}.tl-t2{color:var(--t2c)}.tl-t3{color:var(--t3c)}
-.tier-row{display:grid;gap:8px;margin-bottom:0}
-.row-1{grid-template-columns:minmax(0,280px);margin:0 auto;width:100%}
-.row-4{grid-template-columns:repeat(4,1fr)}
-.row-6{grid-template-columns:repeat(6,1fr)}
-.row-2{grid-template-columns:repeat(2,1fr);max-width:580px;margin:0 auto;width:100%}
-.tier-gap{height:28px}
-
-/* DEPT CARD */
-.dc{background:var(--card);border-radius:var(--r);padding:13px 13px 11px;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,background .15s;border:.5px solid transparent}
+.tier-sec{margin-bottom:0}
+.tier-lbl{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.tier-lbl::after{content:'';flex:1;height:.5px;background:linear-gradient(90deg,currentColor,transparent);opacity:.25}
+.tle{color:var(--gold)}.tl1{color:var(--t1c)}.tl2{color:var(--t2c)}.tl3{color:var(--t3c)}
+.trow{display:grid;gap:8px}
+.r1{grid-template-columns:minmax(0,280px);margin:0 auto;width:100%}
+.r4{grid-template-columns:repeat(4,1fr)}
+.r6{grid-template-columns:repeat(6,1fr)}
+.r2{grid-template-columns:repeat(2,1fr);max-width:580px;margin:0 auto;width:100%}
+.tgap{height:28px}
+.dc{background:var(--card);border-radius:var(--r);padding:13px 13px 11px;cursor:pointer;transition:transform .15s,background .15s;border:.5px solid transparent}
 .dc:hover{transform:translateY(-2px)}
-.dc.exec-c{border-color:var(--gold-dim)}.dc.exec-c:hover,.dc.exec-c.open{border-color:var(--gold-mid);background:rgba(201,153,58,.05)}
-.dc.t1-c{border-color:var(--t1-dim)}.dc.t1-c:hover,.dc.t1-c.open{border-color:var(--t1-mid);background:rgba(155,143,220,.05)}
-.dc.t2-c{border-color:var(--t2-dim)}.dc.t2-c:hover,.dc.t2-c.open{border-color:var(--t2-mid);background:rgba(98,152,208,.05)}
-.dc.t3-c{border-color:var(--t3-dim)}.dc.t3-c:hover,.dc.t3-c.open{border-color:var(--t3-mid);background:rgba(70,180,170,.05)}
-.dc-icon{font-size:15px;margin-bottom:5px;display:block;line-height:1}
-.dc-name{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:600;line-height:1.25;color:#DDD8CC;margin-bottom:4px}
-.dc-desc{font-size:10.5px;font-weight:300;color:var(--tex3);line-height:1.35;margin-bottom:7px}
+.dc.ec{border-color:var(--gdim)}.dc.ec:hover,.dc.ec.open{border-color:var(--gmid);background:rgba(201,153,58,.05)}
+.dc.c1{border-color:var(--t1d)}.dc.c1:hover,.dc.c1.open{border-color:var(--t1m);background:rgba(155,143,220,.05)}
+.dc.c2{border-color:var(--t2d)}.dc.c2:hover,.dc.c2.open{border-color:var(--t2m);background:rgba(98,152,208,.05)}
+.dc.c3{border-color:var(--t3d)}.dc.c3:hover,.dc.c3.open{border-color:var(--t3m);background:rgba(70,180,170,.05)}
+.dc-icon{font-size:15px;margin-bottom:5px;display:block}
+.dc-name{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:600;color:#DDD8CC;margin-bottom:3px;line-height:1.25}
+.dc-desc{font-size:10.5px;font-weight:300;color:var(--tx3);line-height:1.35;margin-bottom:7px}
 .dc-foot{display:flex;align-items:center;justify-content:space-between}
-.dc-hc{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:.04em}
-.hc-exec{background:var(--gold-dim);color:var(--gold-l);border:.5px solid rgba(201,153,58,.2)}
-.hc-t1{background:var(--t1-dim);color:var(--t1c);border:.5px solid rgba(155,143,220,.2)}
-.hc-t2{background:var(--t2-dim);color:var(--t2c);border:.5px solid rgba(98,152,208,.2)}
-.hc-t3{background:var(--t3-dim);color:var(--t3c);border:.5px solid rgba(70,180,170,.2)}
-.dc-toggle{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tex3);display:flex;align-items:center;gap:3px}
-.dc:hover .dc-toggle,.dc.open .dc-toggle{color:var(--tex2)}
-.dc-arr{display:inline-block;transition:transform .2s;font-style:normal}
-.dc.open .dc-arr{transform:rotate(180deg)}
-
-/* SUB-PANEL */
-.sub-panel{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0}
-.sub-panel.open{max-height:600px;opacity:1}
+.hcbadge{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px}
+.hce{background:var(--gdim);color:var(--gl);border:.5px solid rgba(201,153,58,.2)}
+.hc1{background:var(--t1d);color:var(--t1c);border:.5px solid rgba(155,143,220,.2)}
+.hc2{background:var(--t2d);color:var(--t2c);border:.5px solid rgba(98,152,208,.2)}
+.hc3{background:var(--t3d);color:var(--t3c);border:.5px solid rgba(70,180,170,.2)}
+.dc-tog{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);display:flex;align-items:center;gap:3px}
+.dc:hover .dc-tog,.dc.open .dc-tog{color:var(--tx2)}
+.arr{display:inline-block;transition:transform .2s;font-style:normal}
+.dc.open .arr{transform:rotate(180deg)}
+.subp{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0}
+.subp.open{max-height:1200px;opacity:1}
 .sp-inner{padding:16px 0 6px;position:relative}
-.sp-notch{position:absolute;top:0;left:var(--nx,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent}
-.exec-n{border-bottom:8px solid rgba(201,153,58,.25)}.t1-n{border-bottom:8px solid rgba(155,143,220,.25)}
-.t2-n{border-bottom:8px solid rgba(98,152,208,.25)}.t3-n{border-bottom:8px solid rgba(70,180,170,.25)}
-.sp-bar{border-radius:var(--rl);padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
-.exec-bar{background:rgba(201,153,58,.04);border:.5px solid rgba(201,153,58,.13)}
-.t1-bar{background:rgba(155,143,220,.04);border:.5px solid rgba(155,143,220,.13)}
-.t2-bar{background:rgba(98,152,208,.04);border:.5px solid rgba(98,152,208,.13)}
-.t3-bar{background:rgba(70,180,170,.04);border:.5px solid rgba(70,180,170,.13)}
-.sc{background:var(--bg3);border-radius:var(--r);padding:11px 12px;border:.5px solid var(--tex3)}
-.sc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:7px}
-.sc-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:#CDCABC;line-height:1.25;flex:1}
-.sc-hc{font-family:'IBM Plex Mono',monospace;font-size:8.5px;white-space:nowrap;padding:2px 5px;border-radius:3px;flex-shrink:0;margin-top:1px}
-.sc-roles{list-style:none;display:flex;flex-direction:column;gap:3px}
-.sc-roles li{font-size:11px;font-weight:300;color:var(--tex2);line-height:1.4;padding-left:10px;position:relative}
-.sc-roles li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:.5px;background:var(--tex3)}
-
-/* DETAIL PANEL */
-.panel{position:fixed;top:0;right:0;width:min(420px,100vw);height:100vh;background:rgba(4,7,14,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:.5px solid transparent;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:200;overflow-y:auto;overscroll-behavior:contain}
+.notch{position:absolute;top:0;left:var(--nx,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent}
+.ne{border-bottom:8px solid rgba(201,153,58,.25)}.n1{border-bottom:8px solid rgba(155,143,220,.25)}
+.n2{border-bottom:8px solid rgba(98,152,208,.25)}.n3{border-bottom:8px solid rgba(70,180,170,.25)}
+.sp-bar{border-radius:var(--rl);padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.sbe{background:rgba(201,153,58,.04);border:.5px solid rgba(201,153,58,.13)}
+.sb1{background:rgba(155,143,220,.04);border:.5px solid rgba(155,143,220,.13)}
+.sb2{background:rgba(98,152,208,.04);border:.5px solid rgba(98,152,208,.13)}
+.sb3{background:rgba(70,180,170,.04);border:.5px solid rgba(70,180,170,.13)}
+/* SUBTEAM CARD */
+.stcard{background:var(--bg3);border-radius:var(--r);padding:12px;border:.5px solid var(--tx3);display:flex;flex-direction:column;gap:8px}
+.stcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.stname{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:#CDCABC;flex:1;background:transparent;
+  border:none;border-bottom:.5px solid transparent;outline:none;cursor:text;padding:1px 0;transition:border-color .15s}
+.stname:focus{color:#EDE8DC;border-bottom-color:rgba(255,255,255,.2)}
+.sthc{font-family:'IBM Plex Mono',monospace;font-size:8.5px;white-space:nowrap;padding:2px 5px;border-radius:3px;flex-shrink:0}
+.st-roles{list-style:none;display:flex;flex-direction:column;gap:3px;margin-bottom:2px}
+.st-roles li{font-size:10.5px;font-weight:300;color:var(--tx2);line-height:1.4;padding-left:10px;position:relative}
+.st-roles li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:.5px;background:var(--tx3)}
+/* OWNERS */
+.owners-block{border-top:.5px solid var(--tx3);padding-top:8px}
+.owners-lbl{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-bottom:5px}
+.owner-row{display:flex;align-items:center;gap:4px;margin-bottom:3px}
+.oi{background:rgba(255,255,255,.04);border:.5px solid var(--tx3);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;
+  font-size:11px;font-weight:300;padding:3px 7px;border-radius:3px;outline:none;transition:border-color .15s}
+.oi:focus{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.07)}
+.oi.on{flex:2;min-width:0}.oi.ot{flex:3;min-width:0}
+.odel{background:none;border:none;color:var(--tx3);cursor:pointer;padding:1px 5px;font-size:13px;flex-shrink:0;transition:color .15s}
+.odel:hover{color:#E07878}
+.add-owner,.add-sub{width:100%;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:.5px dashed var(--tx3);color:var(--tx3);padding:4px;border-radius:3px;cursor:pointer;transition:all .15s}
+.add-owner:hover,.add-sub:hover{border-color:var(--tx2);color:var(--tx2)}
+.add-sub{margin-top:4px}
+.del-sub{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:11px;padding:0 4px;transition:color .15s;flex-shrink:0}
+.del-sub:hover{color:#E07878}
+/* PANEL */
+.panel{position:fixed;top:0;right:0;width:min(480px,100vw);height:100vh;background:rgba(4,7,14,.97);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:.5px solid transparent;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:200;overflow-y:auto;overscroll-behavior:contain}
 .panel.open{transform:translateX(0)}
-.panel-inner{padding:28px 24px 48px;min-height:100%}
-.panel-close{position:sticky;top:0;float:right;margin:0 0 8px 8px;font-family:'IBM Plex Mono',monospace;font-size:13px;background:rgba(255,255,255,.06);border:.5px solid var(--tex3);color:var(--tex2);padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .15s}
-.panel-close:hover{background:rgba(255,255,255,.1);color:var(--tex)}
-.dp-head{display:flex;align-items:flex-start;gap:14px;padding-bottom:18px;margin-bottom:18px;border-bottom:.5px solid var(--tex3);clear:both}
-.dp-icon{font-size:26px;flex-shrink:0;margin-top:3px}
-.dp-tier{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
-.dp-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:600;color:#EDE8DC;line-height:1.2}
-.dp-fn{font-size:12.5px;font-weight:300;color:var(--tex2);line-height:1.7;margin-bottom:16px;font-style:italic}
-.dp-hc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:var(--r);margin-bottom:18px}
-.dp-hc-label{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tex2)}
-.dp-hc-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:600}
-.dp-sub-hdr{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--tex3);margin-bottom:10px}
-.dp-sc{border-radius:var(--r);padding:12px 13px;margin-bottom:7px;border:.5px solid}
-.dp-sc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px}
-.dp-sc-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:#D4D0C4;flex:1;line-height:1.25}
-.dp-sc-hc{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:1px}
-.dp-sc ul{list-style:none;display:flex;flex-direction:column;gap:3px}
-.dp-sc ul li{font-size:11.5px;font-weight:300;color:var(--tex2);line-height:1.4;padding-left:11px;position:relative}
-.dp-sc ul li::before{content:'→';position:absolute;left:0;top:0;font-size:9px;color:var(--tex3)}
-
-/* FOOTER */
-footer{margin-top:64px;padding-top:24px;border-top:.5px solid rgba(201,153,58,.09);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.f-brand{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--tex2)}
-.f-brand em{font-style:normal;color:var(--gold)}
-.f-meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tex3);text-align:right;line-height:1.75;letter-spacing:.04em}
-
-@media(max-width:900px){.row-4{grid-template-columns:repeat(2,1fr)}.row-6{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.page{padding:36px 16px 56px}.row-4,.row-6,.row-2{grid-template-columns:1fr 1fr}.sp-bar{grid-template-columns:1fr}}
+.p-inner{padding:24px 22px 48px;min-height:100%}
+.pclose{position:sticky;top:0;float:right;margin:0 0 6px 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  background:rgba(255,255,255,.06);border:.5px solid var(--tx3);color:var(--tx2);padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .15s}
+.pclose:hover{background:rgba(255,255,255,.1);color:var(--tx)}
+.dp-head{display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:.5px solid var(--tx3);clear:both}
+.dp-icon{font-size:24px;flex-shrink:0;margin-top:3px}
+.dp-tier{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
+.dp-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:600;color:#EDE8DC;line-height:1.2}
+.dp-bdg{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;border-radius:3px;border:.5px solid;letter-spacing:.06em}
+.dp-fn{font-size:12.5px;font-weight:300;color:var(--tx2);line-height:1.7;margin-bottom:14px;font-style:italic}
+.dp-hcr{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-radius:var(--r);margin-bottom:16px}
+.dp-hcl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2)}
+.dp-hcv{font-family:'Syne',sans-serif;font-size:15px;font-weight:600}
+.dp-sec{margin-bottom:14px}
+.dp-sh{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--tx3);margin-bottom:7px;padding-bottom:5px;border-bottom:.5px solid var(--tx3)}
+.dp-mand{font-size:12px;font-weight:300;color:var(--tx2);line-height:1.65}
+.dp-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.dp-list li{font-size:11.5px;font-weight:300;color:var(--tx2);line-height:1.45;padding-left:13px;position:relative}
+.dp-list li::before{content:'→';position:absolute;left:0;top:0;font-size:9px;color:var(--tx3)}
+.dp-chips{display:flex;flex-wrap:wrap;gap:5px}
+.dp-chip{font-size:10.5px;font-weight:300;color:var(--tx2);background:var(--bg3);border:.5px solid var(--tx3);padding:3px 8px;border-radius:3px}
+/* PILLARS VIEW */
+#pillars-view{display:none}
+.pv-intro{font-size:13px;font-weight:300;color:var(--tx2);max-width:640px;margin:0 auto 20px;text-align:center;line-height:1.75;font-style:italic}
+.pv-wrap{border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05);margin-bottom:20px}
+#pillars-canvas{display:block;width:100%}
+.pv-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+.pc{border-radius:var(--rl);padding:18px 20px;border:.5px solid;transition:border-color .2s}
+.pc-ey{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px}
+.pc-ti{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#EAE5D8;margin-bottom:7px}
+.pc-de{font-size:11.5px;font-weight:300;color:var(--tx2);line-height:1.65;margin-bottom:10px}
+.pc-note{font-size:11px;font-weight:300;color:var(--tx2);line-height:1.6;padding:9px 11px;border-radius:var(--r);
+  background:rgba(255,255,255,.025);border:.5px solid rgba(255,255,255,.06);margin-bottom:11px}
+.pc-dh{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-bottom:7px}
+.pc-chips{display:flex;flex-wrap:wrap;gap:5px}
+.pc-chip{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;border-radius:3px;border:.5px solid}
+.cc{background:var(--bg2);border:.5px solid var(--tx3);border-radius:var(--rl);padding:18px 20px;margin-bottom:16px}
+.cc-hdr{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:9px}
+.cc-p{font-size:12px;font-weight:300;color:var(--tx2);line-height:1.65;margin-bottom:9px}
+.cc-chips{display:flex;flex-wrap:wrap;gap:5px}
+.cc-chip{font-size:10.5px;color:var(--tx2);background:var(--bg3);border:.5px solid var(--tx3);padding:3px 9px;border-radius:3px}
+.gov{background:rgba(201,153,58,.04);border:.5px solid rgba(201,153,58,.15);border-radius:var(--rl);padding:18px 20px}
+.gov-hdr{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:11px}
+.gov-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gov-cell strong{display:block;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:#DDD8CC;margin-bottom:4px}
+.gov-cell p{font-size:11.5px;font-weight:300;color:var(--tx2);line-height:1.6}
+footer{margin-top:60px;padding-top:22px;border-top:.5px solid rgba(201,153,58,.09);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.fb{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--tx2)}
+.fb em{font-style:normal;color:var(--gold)}
+.fm{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);text-align:right;line-height:1.75}
+@media(max-width:900px){.r4{grid-template-columns:repeat(2,1fr)}.r6{grid-template-columns:repeat(3,1fr)}.pv-cards{grid-template-columns:1fr}.gov-row{grid-template-columns:1fr}}
+@media(max-width:600px){.page{padding:36px 16px 56px}.r4,.r6,.r2{grid-template-columns:1fr 1fr}.sp-bar{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="sl" id="s1"></div>
-<div class="sl" id="s2"></div>
+<div class="stars"></div>
 <div class="aurora"></div>
-
 <div class="page">
-
-  <header>
-    <div class="eyebrow">UAE · Space Ecosystem Initiative · Restricted — Institutional Confidential</div>
-    <h1>Xperience<em>Space</em></h1>
-    <div class="h-divider"></div>
-    <div class="h-sub">Operational Architecture · 12-Domain Structure</div>
-  </header>
-
-  <div class="vctrls">
-    <button class="vbtn active" id="btn-solar" onclick="switchView('solar')">◉ &nbsp;Operational System</button>
-    <button class="vbtn" id="btn-list" onclick="switchView('list')">≡ &nbsp;Org Chart</button>
+<header>
+  <div class="eyebrow">UAE · Space Ecosystem Initiative · Restricted — Institutional Confidential</div>
+  <h1>Xperience<em>Space</em></h1>
+  <div class="hdiv"></div>
+  <div class="hsub">Operational Architecture · 12-Domain Structure · v4.0</div>
+</header>
+<div class="vctrls">
+  <button class="vbtn active" id="btn-solar" onclick="switchView('solar')">◉&nbsp; Operational System</button>
+  <button class="vbtn" id="btn-list" onclick="switchView('list')">≡&nbsp; Org Chart</button>
+  <button class="vbtn" id="btn-pillars" onclick="switchView('pillars')">◈&nbsp; 4 Pillars</button>
+</div>
+<div id="solar-view">
+  <canvas id="solar-canvas"></canvas>
+  <div class="chint">Click any body · Dashed lines show downstream dependencies · Click empty space to release</div>
+  <div class="cleg">
+    <div class="cli"><div class="cld" style="background:#C9993A"></div>Executive</div>
+    <div class="cli"><div class="cld" style="background:#9B8FDC"></div>Tier 1 — VUC Core</div>
+    <div class="cli"><div class="cld" style="background:#46B4AA"></div>Tier 3 — Co-governed</div>
+    <div class="cli"><div class="cld" style="background:#6298D0"></div>Tier 2 — External</div>
   </div>
-
-  <!-- SOLAR VIEW -->
-  <div id="solar-view">
-    <canvas id="solar-canvas"></canvas>
-    <div class="canvas-hint">Click any body to explore · Click empty space to release</div>
-    <div class="canvas-legend">
-      <div class="cl-item"><div class="cl-dot" style="background:#C9993A"></div>Executive</div>
-      <div class="cl-item"><div class="cl-dot" style="background:#9B8FDC"></div>Tier 1 — VUC Core</div>
-      <div class="cl-item"><div class="cl-dot" style="background:#6298D0"></div>Tier 2 — External</div>
-      <div class="cl-item"><div class="cl-dot" style="background:#46B4AA"></div>Tier 3 — Co-governed</div>
+</div>
+<div id="list-view"><div id="list-content"></div></div>
+<div id="pillars-view">
+  <p class="pv-intro">Hover the diagram to explore pillar&ndash;domain connections. Each pillar activates a specific cluster of operational domains — all rest on shared VUC infrastructure.</p>
+  <div class="pv-wrap"><canvas id="pillars-canvas"></canvas></div>
+  <div class="pv-cards" id="pv-cards"></div>
+  <div class="cc">
+    <div class="cc-hdr">Cross-cutting infrastructure — all 4 pillars</div>
+    <p class="cc-p">Owned directly by VUC — provides shared infrastructure for every pillar simultaneously.</p>
+    <div class="cc-chips">
+      <span class="cc-chip" style="border-color:rgba(155,143,220,.3);color:var(--t1c)">⊕ Strategy &amp; Direction</span>
+      <span class="cc-chip" style="border-color:rgba(155,143,220,.3);color:var(--t1c)">◈ Intelligence &amp; Data</span>
+      <span class="cc-chip" style="border-color:rgba(98,152,208,.3);color:var(--t2c)">⊡ Governance &amp; Legal</span>
+      <span class="cc-chip" style="border-color:rgba(98,152,208,.3);color:var(--t2c)">◫ Continuity &amp; Knowledge</span>
     </div>
   </div>
-
-  <!-- LIST VIEW -->
-  <div id="list-view">
-    <div id="list-content"></div>
+  <div class="gov">
+    <div class="gov-hdr">Governance model — simplified</div>
+    <div class="gov-row">
+      <div class="gov-cell"><strong>Who decides what</strong><p>VUC sets standards, narrative and KPIs. External leads control execution. Co-governed domains require joint sign-off.</p></div>
+      <div class="gov-cell"><strong>Conflict resolution</strong><p>Disputes go to Governance &amp; Legal, then Programme Council. Charter requires 75% supermajority to amend.</p></div>
+      <div class="gov-cell"><strong>Partner onboarding</strong><p>All partners sign a framework agreement referencing the Integration Doctrine. Co-governance required before any public activity.</p></div>
+    </div>
   </div>
-
-  <footer>
-    <div class="f-brand">Xperience<em>Space</em> · UAE Space Ecosystem</div>
-    <div class="f-meta">Operational Architecture v1.0 · VUC Strategy Office<br>Founding Architecture — Restricted / Institutional Confidential</div>
-  </footer>
-
 </div>
-
-<!-- DETAIL PANEL -->
+<footer>
+  <div class="fb">Xperience<em>Space</em> · UAE Space Ecosystem</div>
+  <div class="fm">Operational Architecture v4.0 · VUC Strategy Office<br>Restricted / Institutional Confidential</div>
+</footer>
+</div>
 <div id="panel" class="panel">
-  <div class="panel-inner">
-    <button class="panel-close" onclick="closePanel()">✕ close</button>
-    <div id="panel-content"></div>
+  <div class="p-inner">
+    <button class="pclose" onclick="closePanel()">&#x2715; close</button>
+    <div id="pcontent"></div>
   </div>
 </div>
-
 <script>
-/* ═══════════════════════════════════════════
-   DATA
-═══════════════════════════════════════════ */
-const TC={exec:'#C9993A',t1:'#9B8FDC',t2:'#6298D0',t3:'#46B4AA'};
-const TD={exec:'rgba(201,153,58,.1)',t1:'rgba(155,143,220,.1)',t2:'rgba(98,152,208,.1)',t3:'rgba(70,180,170,.1)'};
-
-const D={
-  exec:{name:'Executive Leadership',icon:'◎',tier:'exec',tierLabel:'Executive',hc:'6–10 staff · 4 bodies',
-    fn:'Foundational direction, institutional authority & multi-generational vision stewardship of the XperienceSpace programme.',
-    sub:[
-      {n:'Founding Directorate',hc:'2–3 people',roles:['Strategic vision and programme authorship','Founding charter oversight and ratification','Sovereign-level representation globally']},
-      {n:'Program Council',hc:'8–12 members (non-staff)',roles:['Highest governing body — meets quarterly','Major institutional partners and sovereign participants','VUC serves as Secretariat; prepares all agendas']},
-      {n:'Advisory Board',hc:'15–20 members (non-staff)',roles:['Globally recognised figures: former agency directors, senior scientists, geopolitical advisors','Lends external credibility and institutional legitimacy','VUC manages all briefings and public communications']},
-      {n:'VUC Integration Directorate',hc:'3–5 staff',roles:['Permanent executive infrastructure','Operates continuously across leadership transitions','Holds complete, unfiltered cross-programme visibility']}
-    ]},
-  strategy:{name:'Strategy & Direction',icon:'⊕',tier:'t1',tierLabel:'Tier 1 — VUC Core Nucleus',hc:'4–6 staff',
-    fn:'Defines programme goals, success criteria, and decision frameworks used by every other department.',
-    sub:[
-      {n:'Programme Direction Unit',hc:'2–3 people',roles:['Long-range planning and milestone architecture','KPI system design and annual maintenance','Programme-wide strategic agenda']},
-      {n:'Partner Alignment Team',hc:'1–2 people',roles:['External partner evaluation frameworks','Tier recognition criteria management','Partner alignment assessment']},
-      {n:'Risk & Scenarios Unit',hc:'1–2 people',roles:['Geopolitical and operational risk modelling','Scenario planning for century-scale transitions','Early-warning indicator system']},
-      {n:'Integration Doctrine Office',hc:'1 person',roles:['Custodian of the constitutional reference document','Annual Doctrine review cycles','Architectural knowledge transfer to incoming leadership']}
-    ]},
-  intelligence:{name:'Intelligence & Data',icon:'◈',tier:'t1',tierLabel:'Tier 1 — VUC Core Nucleus',hc:'5–8 staff',
-    fn:'Operates the programme\'s data infrastructure: reporting, partner monitoring, decision-support, and programme memory.',
-    sub:[
-      {n:'Performance Reporting Unit',hc:'2–3 people',roles:['Monthly cross-domain data synthesis from all partners','Quarterly consolidated reports for the Programme Council','KPI dashboards and trend analysis']},
-      {n:'Partner Monitoring Team',hc:'1–2 people',roles:['Real-time partner status tracking and dashboards','Performance deviation detection and escalation','Compliance monitoring across all domain partners']},
-      {n:'Decision-Support Systems',hc:'2–3 people',roles:['Analytical infrastructure and scenario modelling tools','Data platform architecture and maintenance','Intelligence licensing framework (Year 3+)']},
-      {n:'Programme Memory Archive',hc:'1 person',roles:['Institutional knowledge continuity system','Archive of all decisions, relationships, and history','Access governance and retrieval infrastructure']}
-    ]},
-  science:{name:'Science & Research',icon:'⊛',tier:'t1',tierLabel:'Tier 1 — VUC Core Nucleus',hc:'4–7 staff',
-    fn:'Holds credibility certification authority, validates scientific claims, and protects the programme\'s reputational integrity.',
-    sub:[
-      {n:'Credibility Certification Unit',hc:'2–3 people',roles:['XS scientific imprimatur certification process','Review and validation of all partner scientific claims','Certification standards and updates']},
-      {n:'Peer Review Partnerships',hc:'1–2 people',roles:['Partnerships with universities and national labs','Peer-review pipeline management','Target: 2+ sovereign space agency recognitions (Year 7)']},
-      {n:'Science Committee',hc:'5–8 rotating ext. members',roles:['Independent oversight of the Science function','External validation of imprimatur standards','Rotating membership ensures neutrality']},
-      {n:'Publication & Attribution Office',hc:'1–2 people',roles:['Co-attribution management on all significant outputs','VUC entry into the scientific record stewardship','Publication pipeline and journal coordination']}
-    ]},
-  narrative:{name:'Narrative & Comms',icon:'◉',tier:'t1',tierLabel:'Tier 1 — VUC Core Nucleus',hc:'5–9 staff',
-    fn:'Controls programme positioning with global audiences and media. Owns the founding story and all interpretive frameworks.',
-    sub:[
-      {n:'Founding Story Unit',hc:'1–2 people',roles:['Core narrative architecture and original authorship','Founding story consistency and controlled evolution','Interpretive frames for all partner communications']},
-      {n:'Media Relations Team',hc:'2–3 people',roles:['Global press, publications, and broadcast management','Media partnerships and strategic story placement','Crisis communications protocols']},
-      {n:'Government Communications',hc:'1–2 people',roles:['Sovereign and institutional messaging frameworks','Official statements and position papers','Advisory Board public position oversight']},
-      {n:'Digital & Content Studio',hc:'2–3 people',roles:['Long-form content, visual assets, owned channels','Milestone campaign production','Partner communications guidelines']}
-    ]},
-  capital:{name:'Capital & Finance',icon:'◇',tier:'t2',tierLabel:'Tier 2 — External',hc:'4–7 staff',
-    fn:'Manages funding, investment orchestration, and financial partner relationships within Strategy-defined parameters.',
-    sub:[
-      {n:'Investor Relations',hc:'2–3 people',roles:['Institutional and sovereign investor engagement','Investment thesis materials management','Ongoing investor reporting and stewardship']},
-      {n:'Funding Architecture Team',hc:'1–2 people',roles:['Capital structure and allocation frameworks','Funding round structuring and term management','Integration retainer administration (8–12% annual budget)']},
-      {n:'Financial Compliance Unit',hc:'1–2 people',roles:['Audit, regulatory reporting, governance alignment','Multi-jurisdictional financial compliance','Reporting to Programme Council via Intelligence']},
-      {n:'Revenue & Commercial Office',hc:'1–2 people',roles:['Income stream development and monetisation roadmap','Commercial expansion pathways','Sponsorship revenue and conversion pipeline']}
-    ]},
-  institutional:{name:'Institutional Relations',icon:'◻',tier:'t2',tierLabel:'Tier 2 — External',hc:'4–6 staff',
-    fn:'Manages government, agency, and sovereign relationships using Narrative tools and Science credibility provided by VUC.',
-    sub:[
-      {n:'Government Affairs Unit',hc:'2–3 people',roles:['UAE and international government liaison','Ministry-level relationship management','Regulatory and policy engagement']},
-      {n:'Agency Relations Team',hc:'1–2 people',roles:['Space agencies and scientific bodies engagement','MoU and formal agreement management','Sovereign agency partnership targets (Year 1–7)']},
-      {n:'Diplomatic Engagement',hc:'1–2 people',roles:['Former officials and diplomatic network cultivation','Informal relationship development','Sovereign participant onboarding']},
-      {n:'Multilateral Affairs',hc:'1 person',roles:['International organisations and treaty monitoring','Multilateral forum representation','Cross-border coordination frameworks']}
-    ]},
-  governance:{name:'Governance & Legal',icon:'⊡',tier:'t2',tierLabel:'Tier 2 — External',hc:'3–5 staff',
-    fn:'Manages programme rules, decision processes, dispute resolution, and the constitutional legal framework.',
-    sub:[
-      {n:'Charter & Constitutional Office',hc:'1–2 people',roles:['Founding charter drafting and stewardship','Six non-negotiable provisions enforcement','75% supermajority amendment threshold management']},
-      {n:'Legal & Compliance Unit',hc:'1–2 people',roles:['Contract frameworks and IP governance','Cross-jurisdictional compliance','Co-attribution and IP rights administration']},
-      {n:'Dispute Resolution Office',hc:'1 person',roles:['Internal arbitration for partner conflicts','Conflict escalation and resolution protocols','Neutrality and transparency standards']},
-      {n:'Regulatory Affairs',hc:'1 person',roles:['Cross-jurisdictional regulatory monitoring','Legal domicile governance','Compliance updates across all partners']}
-    ]},
-  ecosystem:{name:'Ecosystem & Partnerships',icon:'⊞',tier:'t2',tierLabel:'Tier 2 — External',hc:'5–8 staff',
-    fn:'Manages partner relationships, collaboration frameworks, and the programme\'s external stakeholder network.',
-    sub:[
-      {n:'Strategic Partnerships Team',hc:'2–3 people',roles:['Anchor partner identification and cultivation','Partnership architecture and tier frameworks','Alignment to VUC Strategy criteria']},
-      {n:'Commercial Partners Unit',hc:'2–3 people',roles:['Sponsor and commercial ecosystem management','Partner onboarding and stewardship','Sponsor → platform partner graduation pathway']},
-      {n:'Academic & Research Network',hc:'1–2 people',roles:['University and national lab partnerships','Research collaboration frameworks','Academic credibility for Science domain']},
-      {n:'International Affiliates',hc:'1–2 people',roles:['Global partner integration and coordination','Regional affiliate relationships','Performance monitoring via Intelligence layer']}
-    ]},
-  continuity:{name:'Continuity & Knowledge',icon:'◫',tier:'t2',tierLabel:'Tier 2 — External',hc:'2–4 staff',
-    fn:'Holds the programme\'s institutional memory, archives, and manages long-term succession integrity.',
-    sub:[
-      {n:'Archive & Records Office',hc:'1–2 people',roles:['All programme documents, decisions, and history','Archival structure and access governance','Founding document preservation']},
-      {n:'Succession Planning Unit',hc:'1 person',roles:['Leadership transition frameworks on rolling 3-year cycles','Succession candidate identification and development','Leadership transition invisibility protocols']},
-      {n:'Knowledge Management',hc:'1–2 people',roles:['Documented systems and protocols for all processes','Knowledge in systems, not people — enforcement','Annual knowledge audit and institutional gap identification']}
-    ]},
-  expansion:{name:'Expansion & Ventures',icon:'⊿',tier:'t2',tierLabel:'Tier 2 — External',hc:'2–5 staff',
-    fn:'Manages future ventures and frontier programmes. Highest long-term commercial upside of the programme.',
-    sub:[
-      {n:'Venture Development Unit',hc:'1–2 people',roles:['New initiative identification, scoping, and structuring','XS-originated opportunity pipeline management','Pre-assessment against charter criteria']},
-      {n:'Option Assessment Team',hc:'1 person',roles:['VUC charter participation right evaluation','90-day option exercise window management','Valuation and term-sheet review']},
-      {n:'Commercial Ventures Office',hc:'1–2 people',roles:['Satellite infrastructure, resource, and tech ventures','Long-horizon convertible instruments (20–30yr)','Commercial upside tracking and reporting']},
-      {n:'Space City Liaison',hc:'1 person',roles:['UAE Space City coordination','Mars 2117 programme entity relationships','Pipeline between XS Expansion and UAE sovereign infrastructure']}
-    ]},
-  operations:{name:'Operations & Integration',icon:'⊗',tier:'t3',tierLabel:'Tier 3 — Co-governed',hc:'12–20 staff · Largest dept.',
-    fn:'Manages programme execution across all partner entities. External leads hold delivery authority; VUC holds standards & audit rights.',
-    sub:[
-      {n:'Programme Execution Office',hc:'3–5 people',roles:['Cross-partner coordination and delivery','Programme-wide calendar and milestone oversight','Escalation and issue resolution']},
-      {n:'Standards & Protocols Unit',hc:'1–2 people',roles:['Integration standards definition (VUC authority)','Protocol documentation and partner onboarding','Audit framework design']},
-      {n:'Inaugural Event Team',hc:'3–5 + external crew',roles:['Founding Signal ceremony — concept to execution','Sponsor and partner coordination','Scales with external event contractors']},
-      {n:'Cosmic Summit Operations',hc:'2–4 people',roles:['Annual sovereign gathering coordination','Programme agenda and speaker management','Venue, logistics, and experience design']},
-      {n:'UAE Space Welcome Center',hc:'4–6 people',roles:['Permanent visitor experience operation','Educational and narrative programming','Stakeholder engagement and tour management']},
-      {n:'Audit & Quality Assurance',hc:'1–2 people',roles:['Standards compliance monitoring','Audit cycle management and reporting','Corrective action tracking']}
-    ]},
-  technology:{name:'Technology & R&D',icon:'⊕',tier:'t3',tierLabel:'Tier 3 — Co-governed',hc:'4–8 staff',
-    fn:'Manages R&D standards, engineering protocols, and IP governance. VUC retains validation authority and co-authorship rights.',
-    sub:[
-      {n:'R&D Standards Unit',hc:'1–2 people',roles:['Engineering and research protocol definition','Technology standards for all programme partners','Standards publication and training']},
-      {n:'IP Governance Office',hc:'1–2 people',roles:['IP rights, co-authorship, and licensing frameworks','IP audit across all partner R&D outputs','VUC co-authorship rights enforcement']},
-      {n:'Digital Infrastructure Team',hc:'2–4 people',roles:['Platform, data, and systems architecture','Intelligence and data infrastructure','Digital platform for programme operations']},
-      {n:'Innovation Labs Liaison',hc:'1–2 people',roles:['External R&D partnership coordination','Lab and research entity management','Technology claim validation pipeline']}
-    ]}
+var TC={exec:'#C9993A',t1:'#9B8FDC',t2:'#6298D0',t3:'#46B4AA'};
+var CONNECTIONS={
+  exec:['strategy','intelligence','science','narrative'],
+  strategy:['operations','technology','capital','governance'],
+  intelligence:['operations','technology'],
+  science:['technology','governance','ecosystem'],
+  narrative:['operations','ecosystem','institutional'],
+  operations:['capital','ecosystem','institutional','continuity'],
+  technology:['capital','expansion','governance']
 };
-
-/* ═══════════════════════════════════════════
-   CANVAS SETUP
-═══════════════════════════════════════════ */
-const canvas=document.getElementById('solar-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,cx,cy,SUN_R,R1,R2,R3,animId=null;
-const DPR=window.devicePixelRatio||1;
-
-const PLANETS=[
-  {id:'strategy',   tier:'t1',label:'Strategy &\nDirection',   hc:'4–6',   angle:0,          speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:0},
-  {id:'intelligence',tier:'t1',label:'Intelligence\n& Data',   hc:'5–8',   angle:Math.PI*.5,  speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*.5},
-  {id:'science',    tier:'t1',label:'Science &\nResearch',     hc:'4–7',   angle:Math.PI,     speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI},
-  {id:'narrative',  tier:'t1',label:'Narrative &\nComms',      hc:'5–9',   angle:Math.PI*1.5, speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*1.5},
-  {id:'capital',    tier:'t2',label:'Capital &\nFinance',      hc:'4–7',   angle:0,           speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:0},
-  {id:'institutional',tier:'t2',label:'Institutional\nRelations',hc:'4–6', angle:Math.PI/3,   speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI/3},
-  {id:'governance', tier:'t2',label:'Governance\n& Legal',     hc:'3–5',   angle:Math.PI*2/3, speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*2/3},
-  {id:'ecosystem',  tier:'t2',label:'Ecosystem &\nPartnerships',hc:'5–8',  angle:Math.PI,     speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI},
-  {id:'continuity', tier:'t2',label:'Continuity &\nKnowledge', hc:'2–4',   angle:Math.PI*4/3, speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*4/3},
-  {id:'expansion',  tier:'t2',label:'Expansion &\nVentures',   hc:'2–5',   angle:Math.PI*5/3, speed:.000325,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*5/3},
-  {id:'operations', tier:'t3',label:'Operations &\nIntegration',hc:'12–20',angle:Math.PI*.25, speed:.00015,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*.25},
-  {id:'technology', tier:'t3',label:'Technology\n& R&D',       hc:'4–8',   angle:Math.PI*1.25,speed:.00015,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*1.25},
+var D={
+exec:{name:'Executive Leadership',icon:'&#9678;',tier:'exec',tierLabel:'Executive',owner:'VUC Direct',visibility:'Confidential',phase:'Activate Now',hc:'6&#x2013;10 staff &middot; 4 bodies',fn:'Foundational direction, institutional authority and vision stewardship of the XperienceSpace programme.',mandate:'Establish and ratify the founding charter with all 6 non-negotiable provisions. Represent XperienceSpace at sovereign level globally. Oversee all Tier 1 domains.',deliverables:['Founding charter signed &mdash; Month 3','Programme Council convened &mdash; Month 6','Advisory Board 15+ members &mdash; Month 9','VUC Integration Directorate staffed &mdash; Month 3'],partners:['UAE Space Agency','MBRSC','Sovereign wealth fund representatives','Advisory Board members'],kpis:['Charter ratified with all 6 provisions','Council quorum by Month 6','Advisory Board first appearance Year 1','All T1 domains operational Month 12'],sub:[{n:'Founding Directorate',hc:'2&#x2013;3',roles:['Strategic vision and programme authorship','Founding charter oversight','Sovereign-level representation globally']},{n:'Program Council',hc:'8&#x2013;12 members',roles:['Highest governing body &mdash; quarterly','Major institutional participants','VUC serves as Secretariat']},{n:'Advisory Board',hc:'15&#x2013;20 members',roles:['Former directors, senior scientists, advisors','Institutional credibility and legitimacy','VUC manages all briefings']},{n:'VUC Integration Directorate',hc:'3&#x2013;5',roles:['Permanent executive infrastructure','Cross-programme visibility','Integration Doctrine stewardship']}]},
+strategy:{name:'Strategy & Direction',icon:'&#8853;',tier:'t1',tierLabel:'Tier 1 &mdash; VUC Core',owner:'VUC Direct',visibility:'Internal',phase:'Activate Now',hc:'4&#x2013;6 staff',fn:'Defines programme goals, decision frameworks and the KPI architecture against which all partner performance is measured.',mandate:'Establish the Integration Doctrine. Set programme direction across all 12 domains. Define criteria for all decisions.',deliverables:['Integration Doctrine v1.0 &mdash; Month 2','KPI architecture &mdash; Month 3','Partner alignment framework &mdash; Month 4','Annual strategic review &mdash; Month 12'],partners:['VUC Integration Directorate','All 12 domain leads','Advisory Board'],kpis:['Doctrine ratified by Council','KPIs accepted by all leads Month 6','No decisions outside Strategy framework Year 1'],sub:[{n:'Programme Direction Unit',hc:'2&#x2013;3',roles:['Long-range planning and milestones','KPI system design and maintenance','Programme-wide strategic agenda']},{n:'Partner Alignment Team',hc:'1&#x2013;2',roles:['External partner evaluation framework','Tier recognition criteria','Partner alignment assessments']},{n:'Risk & Scenarios Unit',hc:'1&#x2013;2',roles:['Geopolitical and operational risk modelling','Scenario planning multi-decade','Early-warning indicator system']},{n:'Integration Doctrine Office',hc:'1',roles:['Constitutional reference stewardship','Annual Doctrine review cycles','Knowledge transfer to new leadership']}]},
+intelligence:{name:'Intelligence & Data',icon:'&#9672;',tier:'t1',tierLabel:'Tier 1 &mdash; VUC Core',owner:'VUC Direct',visibility:'Confidential',phase:'Activate Now',hc:'5&#x2013;8 staff',fn:'The data infrastructure and informational backbone of all governance: reporting, monitoring, decision-support and institutional memory.',mandate:'Ensure no external stakeholder holds equivalent cross-programme visibility. Produce all Programme Council reporting.',deliverables:['Data infrastructure &mdash; Month 2','Partner dashboards live &mdash; Month 6','First quarterly Council report &mdash; Month 6','Risk dashboard &mdash; Month 4'],partners:['All 12 domain leads','Financial auditors','Technology & R&D'],kpis:['Monthly data 100% of domains Month 6','Zero data gaps in Council reports','Licensing framework Year 3'],sub:[{n:'Performance Reporting Unit',hc:'2&#x2013;3',roles:['Monthly cross-domain synthesis','Quarterly Council reports','KPI dashboards and trends']},{n:'Partner Monitoring Team',hc:'1&#x2013;2',roles:['Real-time partner status dashboards','Performance deviation detection','Compliance monitoring']},{n:'Decision-Support Systems',hc:'2&#x2013;3',roles:['Analytical infrastructure and modelling','Data platform architecture','Intelligence licensing Year 3+']},{n:'Programme Memory Archive',hc:'1',roles:['Institutional knowledge continuity','Archive of all decisions and history','Access governance']}]},
+science:{name:'Science & Research',icon:'&#8859;',tier:'t1',tierLabel:'Tier 1 &mdash; VUC Core',owner:'VUC Direct',visibility:'Public',phase:'Activate Now',hc:'4&#x2013;7 staff',fn:'Holds the programme\'s credibility certification authority. Validates all scientific claims and protects reputational integrity.',mandate:'Operate the XS scientific imprimatur process. Ensure all public claims are defensible. Build peer-review partnerships.',deliverables:['XS imprimatur standards &mdash; Month 4','First peer-review MoU &mdash; Month 6','Science Committee 5+ &mdash; Month 6','First certified output &mdash; Month 9'],partners:['UAE universities (MBZUAI, Khalifa, NYU Abu Dhabi)','International space agencies','Technology & R&D','National academies'],kpis:['Imprimatur on 3+ outputs Year 1','Sovereign agency MoU Year 3','Committee operational Month 6','Zero uncertified public claims'],sub:[{n:'Credibility Certification Unit',hc:'2&#x2013;3',roles:['XS imprimatur certification process','Review and validation of partner claims','Standards definition and updates']},{n:'Peer Review Partnerships',hc:'1&#x2013;2',roles:['University and national lab management','Peer-review pipeline coordination','2+ sovereign recognitions Year 7']},{n:'Science Committee',hc:'5&#x2013;8 rotating ext.',roles:['Independent oversight of Science domain','External validation of standards','Rotating membership for neutrality']},{n:'Publication & Attribution Office',hc:'1&#x2013;2',roles:['Co-attribution management on all outputs','VUC entry into scientific record','Publication rights governance']}]},
+narrative:{name:'Narrative & Comms',icon:'&#9673;',tier:'t1',tierLabel:'Tier 1 &mdash; VUC Core',owner:'VUC Direct',visibility:'Public',phase:'Activate Now',hc:'5&#x2013;9 staff',fn:'Controls programme positioning globally. Owns the founding story and interpretive frames for all subsequent communications.',mandate:'Author the founding narrative. Enforce interpretive frames for all domain partner communications globally.',deliverables:['Founding narrative &mdash; Month 2','Partner comms standards &mdash; Month 4','Media framework &mdash; Month 5','First milestone campaign &mdash; Inaugural Event'],partners:['All domain leads','Advisory Board','UAE and international media','Government Comms Office'],kpis:['Narrative adopted by all partners Month 6','Zero unauthorised statements Year 1','3+ tier-1 media placements Year 1'],sub:[{n:'Founding Story Unit',hc:'1&#x2013;2',roles:['Core narrative architecture and authorship','Founding story consistency enforcement','Interpretive frames for all communications']},{n:'Media Relations Team',hc:'2&#x2013;3',roles:['Global press, publications and broadcast','Strategic media partnership development','Crisis communications protocols']},{n:'Government Communications',hc:'1&#x2013;2',roles:['Sovereign and institutional positioning','Official statements and position papers','Advisory Board public position management']},{n:'Digital & Content Studio',hc:'2&#x2013;3',roles:['Long-form content, visual assets, channels','Milestone campaign production','Partner communications guidelines']}]},
+capital:{name:'Capital & Finance',icon:'&#9671;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Confidential',phase:'Needs Partners',hc:'4&#x2013;7 staff',fn:'Manages funding, investment orchestration and financial partner relationships within Strategy-defined parameters.',mandate:'Structure investment and funding frameworks. Engage institutional investors and sovereign wealth funds.',deliverables:['Capital structure validated &mdash; Month 4','Integration retainer formalised &mdash; Month 3','First investor engaged &mdash; Month 5','Sponsorship stream live &mdash; Inaugural Event'],partners:['Sovereign wealth funds (ADIA, Mubadala)','International institutional investors','VUC (retainer oversight)','Financial auditors'],kpis:['Retainer agreed Month 3','First capital commitment Year 1','Reporting to Intelligence Month 6','Revenue across 3+ streams Year 2'],sub:[{n:'Investor Relations',hc:'2&#x2013;3',roles:['Institutional and sovereign engagement','Investment thesis materials','Ongoing investor reporting']},{n:'Funding Architecture Team',hc:'1&#x2013;2',roles:['Capital structure and allocation frameworks','Funding round structuring','Integration retainer administration']},{n:'Financial Compliance Unit',hc:'1&#x2013;2',roles:['Audit, regulatory reporting and governance','Multi-jurisdictional compliance','Reporting via Intelligence to Council']},{n:'Revenue & Commercial Office',hc:'1&#x2013;2',roles:['Income stream development and monetisation','Commercial expansion pathways','Sponsorship tier structure and pipeline']}]},
+institutional:{name:'Institutional Relations',icon:'&#9633;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Internal',phase:'Needs Partners',hc:'4&#x2013;6 staff',fn:'Manages government, agency and sovereign relationships using Narrative tools and Science credibility. Staffed by diplomats.',mandate:'Cultivate UAE government and international agency relationships. Represent XperienceSpace at governmental forums.',deliverables:['UAE government map &mdash; Month 3','First agency MoU &mdash; Month 6','Sovereign protocol &mdash; Month 5','First multilateral forum &mdash; Year 1'],partners:['UAE Space Agency','Ministry of Advanced Technology','International space agencies','Former senior officials'],kpis:['3+ UAE ministry relationships Year 1','1+ international MoU Year 2','All sovereign participants onboarded Month 9'],sub:[{n:'Government Affairs Unit',hc:'2&#x2013;3',roles:['UAE and international government liaison','Ministry-level relationship cultivation','Regulatory and policy engagement']},{n:'Agency Relations Team',hc:'1&#x2013;2',roles:['Space agencies and scientific bodies','MoU and formal agreement management','Sovereign agency partnership pipeline']},{n:'Diplomatic Engagement',hc:'1&#x2013;2',roles:['Former officials and diplomatic network','Informal relationship development','Sovereign participant onboarding']},{n:'Multilateral Affairs',hc:'1',roles:['International organisations and treaties','Multilateral forum representation','Cross-border coordination frameworks']}]},
+governance:{name:'Governance & Legal',icon:'&#8993;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Internal',phase:'Activate Now',hc:'3&#x2013;5 staff',fn:'Manages programme rules, decision processes, dispute resolution and the constitutional legal framework.',mandate:'Draft, ratify and maintain the founding charter. Manage all legal agreements, IP rights and governance arrangements.',deliverables:['Charter draft v1 &mdash; Month 2','All agreements signed &mdash; Month 5','Dispute protocol &mdash; Month 4','Council Secretariat &mdash; Month 3'],partners:['VUC Integration Directorate','Space law firm','All domain leads','UAE legal counsel'],kpis:['Charter ratified Month 3','Zero unmanaged disputes Year 1','All agreements signed Month 6','75% supermajority enforced'],sub:[{n:'Charter & Constitutional Office',hc:'1&#x2013;2',roles:['Founding charter drafting and stewardship','Six non-negotiable provisions enforcement','75% supermajority amendment admin']},{n:'Legal & Compliance Unit',hc:'1&#x2013;2',roles:['Contract frameworks and IP governance','Cross-jurisdictional compliance','Co-attribution and IP administration']},{n:'Dispute Resolution Office',hc:'1',roles:['Internal arbitration mechanisms','Conflict escalation and resolution','Neutrality and documentation standards']},{n:'Regulatory Affairs',hc:'1',roles:['Cross-jurisdictional regulatory monitoring','Legal domicile governance','Compliance updates across all partners']}]},
+ecosystem:{name:'Ecosystem & Partnerships',icon:'&#8862;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Public',phase:'Needs Partners',hc:'5&#x2013;8 staff',fn:'Manages partner relationships, collaboration frameworks and the external stakeholder network.',mandate:'Develop and maintain the partner tier framework. Onboard all strategic, commercial, academic and international partners.',deliverables:['Partner tier framework &mdash; Month 3','3+ anchor partners &mdash; Month 6','Commercial tiers &mdash; Inaugural Event','Academic network &mdash; Month 9'],partners:['Anchor strategic partners (aerospace)','Commercial sponsors (energy, technology)','Academic institutions','International affiliates'],kpis:['3+ anchor partners Year 1','10+ sponsors for Inaugural Event','Academic network 5+ Year 2'],sub:[{n:'Strategic Partnerships Team',hc:'2&#x2013;3',roles:['Anchor partner identification and cultivation','Partnership architecture and tier framework','Alignment against VUC Strategy criteria']},{n:'Commercial Partners Unit',hc:'2&#x2013;3',roles:['Sponsor and commercial ecosystem management','Partner onboarding and stewardship','Sponsor-to-platform graduation pathway']},{n:'Academic & Research Network',hc:'1&#x2013;2',roles:['University and national lab partnerships','Research collaboration frameworks','Academic credibility support for Science']},{n:'International Affiliates',hc:'1&#x2013;2',roles:['Global partner integration and coordination','Regional affiliate relationships','Performance monitoring via Intelligence']}]},
+continuity:{name:'Continuity & Knowledge',icon:'&#9643;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Confidential',phase:'Activate Now',hc:'2&#x2013;4 staff',fn:'Holds institutional memory, archives and long-term succession integrity. VUC exit cost grows prohibitively high by design.',mandate:'Embed institutional knowledge in systems, not individuals. Manage leadership succession on rolling 3-year cycles.',deliverables:['Archive system &mdash; Month 2','Succession frameworks T1 leads &mdash; Month 6','Knowledge audit &mdash; Month 12','Doctrine custody assigned &mdash; Month 3'],partners:['VUC Integration Directorate','All T1 domain leads','Legal counsel'],kpis:['100% of decisions archived within 30 days','Succession frameworks Month 6','Zero single-person dependencies Year 2'],sub:[{n:'Archive & Records Office',hc:'1&#x2013;2',roles:['All programme documents and decisions','Archival structure and access governance','Founding document preservation']},{n:'Succession Planning Unit',hc:'1',roles:['Leadership transition frameworks 3-year cycles','Succession candidate development','Invisible continuity design']},{n:'Knowledge Management',hc:'1&#x2013;2',roles:['Documented systems and protocols','Knowledge-in-systems enforcement across domains','Annual audit and gap identification']}]},
+expansion:{name:'Expansion & Ventures',icon:'&#8895;',tier:'t2',tierLabel:'Tier 2 &mdash; External',owner:'External Lead',visibility:'Confidential',phase:'Needs Funding',hc:'2&#x2013;5 staff',fn:'Manages future ventures and frontier programmes. Highest long-term commercial upside. VUC holds charter participation rights.',mandate:'Identify Expansion venture opportunities. Exercise VUC charter participation within the 90-day formation window.',deliverables:['Venture framework &mdash; Month 6','VUC participation right documented &mdash; Month 3','Space City protocol &mdash; Month 9','First venture assessed &mdash; Year 2'],partners:['UAE Space City development entities','MBRSC (Mars 2117)','Long-horizon investment vehicles','Technology & R&D'],kpis:['VUC participation right ratified Month 3','First venture assessed Year 2','Space City liaison Year 1','Long-horizon structure Year 3'],sub:[{n:'Venture Development Unit',hc:'1&#x2013;2',roles:['New initiative identification and structuring','XS-originated opportunity pipeline','Pre-assessment against charter criteria']},{n:'Option Assessment Team',hc:'1',roles:['VUC charter participation evaluation','90-day exercise window tracking','Valuation and term-sheet review']},{n:'Commercial Ventures Office',hc:'1&#x2013;2',roles:['Satellite, resource and life-support ventures','Long-horizon convertible instruments (20&#x2013;30yr)','Commercial upside tracking']},{n:'Space City Liaison',hc:'1',roles:['UAE Space City coordination','Mars 2117 programme relationships','Pipeline to UAE sovereign infrastructure']}]},
+operations:{name:'Operations & Integration',icon:'&#8855;',tier:'t3',tierLabel:'Tier 3 &mdash; Co-governed',owner:'Co-governed',visibility:'Public',phase:'Needs Partners',hc:'12&#x2013;20 staff &middot; Largest dept.',fn:'Manages execution across all partner entities. External leads hold delivery authority. VUC holds standards-definition and audit rights.',mandate:'Coordinate execution across all 12 domains. Manage Inaugural Event, Cosmic Summit and UAE Space Welcome Center.',deliverables:['Integration standards v1.0 &mdash; Month 3','Inaugural Event (Founding Signal) &mdash; Year 1','Cosmic Summit confirmed &mdash; Year 1','Welcome Center brief &mdash; Month 9'],partners:['Event production and logistics','UAE venue and hospitality partners','Welcome Center design firms','All 12 domain leads'],kpis:['Inaugural Event on spec and on brand','Standards adopted by all partners Month 6','Welcome Center rating 4.5+ from opening'],sub:[{n:'Programme Execution Office',hc:'3&#x2013;5',roles:['Cross-partner coordination and delivery','Programme-wide calendar and milestones','Partner escalation and resolution']},{n:'Standards & Protocols Unit',hc:'1&#x2013;2',roles:['Integration standards definition (VUC authority)','Standards documentation and onboarding','Audit framework and version control']},{n:'Inaugural Event Team',hc:'3&#x2013;5 + ext.',roles:['Founding Signal ceremony end-to-end','Sponsor and partner coordination','Scales with external contractors']},{n:'Cosmic Summit Operations',hc:'2&#x2013;4',roles:['Annual sovereign gathering coordination','Agenda, speaker and protocol management','Venue, hospitality and experience design']},{n:'UAE Space Welcome Center',hc:'4&#x2013;6',roles:['Permanent visitor experience operation','Educational narrative and guided experiences','VIP and institutional stakeholder reception']},{n:'Audit & Quality Assurance',hc:'1&#x2013;2',roles:['Standards compliance monitoring','Audit cycle management and reporting','Corrective action tracking']}]},
+technology:{name:'Technology & R&D',icon:'&#8853;',tier:'t3',tierLabel:'Tier 3 &mdash; Co-governed',owner:'Co-governed',visibility:'Public',phase:'Needs Funding',hc:'4&#x2013;8 staff',fn:'Manages R&D standards, engineering protocols and IP governance. Science retains validation authority on all public tech claims.',mandate:'Set R&D standards for all partners. Govern IP rights and co-authorship. Validate technology claims jointly with Science.',deliverables:['R&D standards v1.0 &mdash; Month 4','IP governance framework &mdash; Month 4','Digital infrastructure for Intelligence &mdash; Month 3','First co-validated claim &mdash; Month 8'],partners:['UAE technology and engineering companies','International R&D institutions','Science & Research','Intelligence & Data'],kpis:['R&D standards adopted by all partners Month 6','IP governance ratified Month 5','All public tech claims co-validated Year 1','Digital infrastructure 99.5%+ uptime'],sub:[{n:'R&D Standards Unit',hc:'1&#x2013;2',roles:['Engineering and research protocol definition','Technology standards for all partners','Standards version control and compliance']},{n:'IP Governance Office',hc:'1&#x2013;2',roles:['IP rights, co-authorship and licensing','IP audit across all partner outputs','VUC co-authorship enforcement']},{n:'Digital Infrastructure Team',hc:'2&#x2013;4',roles:['Platform, data and systems architecture','Intelligence infrastructure operations','Digital platform for programme operations']},{n:'Innovation Labs Liaison',hc:'1&#x2013;2',roles:['External R&D partnership coordination','Lab and research entity management','Tech claim validation pipeline into Science']}]}
+};
+var PILLARS=[
+  {id:'education',name:'Education & Talent',icon:'&#9672;',color:'#9B8FDC',num:'01',desc:'Building human capital for the emerging space economy.',note:'Science certifies content. Narrative shapes the educational voice. Operations delivers via Welcome Center. Technology enables digital infrastructure.',domains:['science','narrative','operations','technology']},
+  {id:'rd',name:'R&D',icon:'&#8859;',color:'#6298D0',num:'02',desc:'Advancing applied research and IP anchored in the UAE.',note:'Science validates outputs. Technology sets standards and governs IP. Expansion commercialises IP. Intelligence tracks R&D attribution.',domains:['science','technology','expansion','intelligence']},
+  {id:'engagement',name:'Public Engagement',icon:'&#9673;',color:'#C9993A',num:'03',desc:'Creating public moments that define the space narrative globally.',note:'Narrative controls founding story and frames. Ecosystem mobilises partners. Operations executes Founding Signal, Summit and Welcome Center. Institutional manages sovereign engagement.',domains:['narrative','ecosystem','operations','institutional']},
+  {id:'industry',name:'Industry Development',icon:'&#8853;',color:'#46B4AA',num:'04',desc:'Catalysing the commercial space economy and attracting global industry.',note:'Capital orchestrates investment. Ecosystem develops partnerships. Expansion seeds ventures. Institutional opens government access. Governance provides legal infrastructure.',domains:['capital','ecosystem','expansion','institutional','governance']}
 ];
-
+var SAVE_KEY='xs_org_v4';
+function loadOwners(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch(e){return {}}}
+function saveOwners(data){try{localStorage.setItem(SAVE_KEY,JSON.stringify(data))}catch(e){}}
+var ownersData=loadOwners();
+function getOwners(domainId,subIdx){var k=domainId+'_'+subIdx;return ownersData[k]||[{name:'',title:''}];}
+function setOwners(domainId,subIdx,arr){var k=domainId+'_'+subIdx;ownersData[k]=arr;saveOwners(ownersData);}
+var canvas=document.getElementById('solar-canvas');
+var ctx=canvas.getContext('2d');
+var W,H,cx,cy,SUN_R,R1,R2,R3,animId=null,DPR=window.devicePixelRatio||1;
+var PLANETS=[
+  {id:'strategy',   tier:'t1',label:'Strategy\n& Direction',    hc:'4-6',  angle:0,            speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:0},
+  {id:'intelligence',tier:'t1',label:'Intelligence\n& Data',    hc:'5-8',  angle:Math.PI*.5,   speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*.5},
+  {id:'science',    tier:'t1',label:'Science &\nResearch',      hc:'4-7',  angle:Math.PI,      speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI},
+  {id:'narrative',  tier:'t1',label:'Narrative\n& Comms',       hc:'5-9',  angle:Math.PI*1.5,  speed:.00055,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*1.5},
+  {id:'operations', tier:'t3',label:'Operations &\nIntegration',hc:'12-20',angle:Math.PI*.25,  speed:.00025,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*.25},
+  {id:'technology', tier:'t3',label:'Technology\n& R&D',        hc:'4-8',  angle:Math.PI*1.25, speed:.00025,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*1.25},
+  {id:'capital',    tier:'t2',label:'Capital &\nFinance',       hc:'4-7',  angle:0,            speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:0},
+  {id:'institutional',tier:'t2',label:'Institutional\nRelations',hc:'4-6', angle:Math.PI/3,    speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI/3},
+  {id:'governance', tier:'t2',label:'Governance\n& Legal',      hc:'3-5',  angle:Math.PI*2/3,  speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*2/3},
+  {id:'ecosystem',  tier:'t2',label:'Ecosystem &\nPartners',    hc:'5-8',  angle:Math.PI,      speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI},
+  {id:'continuity', tier:'t2',label:'Continuity\n& Knowledge',  hc:'2-4',  angle:Math.PI*4/3,  speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*4/3},
+  {id:'expansion',  tier:'t2',label:'Expansion\n& Ventures',    hc:'2-5',  angle:Math.PI*5/3,  speed:.00013,r:0,orbitR:0,x:0,y:0,trail:[],_ta:Math.PI*5/3}
+];
 function computeOrbits(){
-  const R=Math.min(cx,cy);
-  SUN_R=Math.max(R*.09,22);
-  R1=R*.22; R2=R*.52; R3=R*.86;
-  PLANETS.forEach(p=>{
-    p.orbitR=p.tier==='t1'?R1:p.tier==='t2'?R2:R3;
-    p.r=p.tier==='t1'?Math.max(R*.038,10):p.tier==='t2'?Math.max(R*.032,9):Math.max(R*.046,12);
+  var R=Math.min(cx,cy)*.96;SUN_R=Math.max(R*.09,20);R1=R*.24;R2=R*.51;R3=R*.83;
+  PLANETS.forEach(function(p){
+    p.orbitR=p.tier==='t1'?R1:p.tier==='t3'?R2:R3;
+    p.r=p.tier==='t1'?Math.max(R*.038,10):p.tier==='t3'?Math.max(R*.044,11):Math.max(R*.030,9);
   });
 }
-
 function resizeCanvas(){
-  if(animId){cancelAnimationFrame(animId);animId=null}
-  const cont=document.getElementById('solar-view');
-  W=cont.clientWidth;
-  H=Math.min(Math.round(W*.84),900);
-  canvas.style.width=W+'px';
-  canvas.style.height=H+'px';
-  canvas.width=W*DPR;
-  canvas.height=H*DPR;
+  if(animId){cancelAnimationFrame(animId);animId=null;}
+  var cont=document.getElementById('solar-view');
+  W=cont.clientWidth;H=Math.min(Math.round(W*.86),920);
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  canvas.width=W*DPR;canvas.height=H*DPR;
   ctx.setTransform(DPR,0,0,DPR,0,0);
-  cx=W/2; cy=H/2;
-  computeOrbits();
-  startAnim();
+  cx=W/2;cy=H/2;computeOrbits();startAnim();
 }
-
-/* ═══════════════════════════════════════════
-   DRAWING
-═══════════════════════════════════════════ */
-let selectedId=null,hoveredId=null;
-
+var selectedId=null,hoveredId=null;
 function hexA(hex,a){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${a})`;
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
 }
-
-function drawOrbitRings(){
-  const rings=[
-    {r:R1,color:TC.t1,label:'Tier 1'},
-    {r:R2,color:TC.t2,label:'Tier 2'},
-    {r:R3,color:TC.t3,label:'Tier 3'},
-  ];
-  rings.forEach(({r,color,label})=>{
-    // Outer soft glow ring
-    ctx.beginPath();
-    ctx.arc(cx,cy,r,0,Math.PI*2);
-    ctx.strokeStyle=hexA(color,.08);
-    ctx.lineWidth=6;
+function drawRings(){
+  [{r:R1,c:TC.t1,l:'Tier 1 — VUC Core'},{r:R2,c:TC.t3,l:'Tier 3 — Co-governed'},{r:R3,c:TC.t2,l:'Tier 2 — External'}].forEach(function(rg){
+    ctx.beginPath();ctx.arc(cx,cy,rg.r,0,Math.PI*2);ctx.strokeStyle=hexA(rg.c,.09);ctx.lineWidth=7;ctx.setLineDash([]);ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,rg.r,0,Math.PI*2);ctx.strokeStyle=hexA(rg.c,.42);ctx.lineWidth=1;ctx.setLineDash([5,7]);ctx.stroke();
     ctx.setLineDash([]);
-    ctx.stroke();
-    // Main orbit line
-    ctx.beginPath();
-    ctx.arc(cx,cy,r,0,Math.PI*2);
-    ctx.strokeStyle=hexA(color,.38);
-    ctx.lineWidth=1;
-    ctx.setLineDash([6,6]);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    // Orbit label at top-right of each ring
-    const lx=cx+r*Math.cos(-Math.PI*.18);
-    const ly=cy+r*Math.sin(-Math.PI*.18)-10;
-    ctx.font='400 9.5px IBM Plex Mono';
-    ctx.textAlign='left';
-    ctx.fillStyle=hexA(color,.45);
-    ctx.fillText(label,lx+6,ly);
+    var lx=cx+rg.r*Math.cos(-Math.PI*.16),ly=cy+rg.r*Math.sin(-Math.PI*.16)-11;
+    ctx.font='400 9.5px IBM Plex Mono';ctx.textAlign='left';ctx.fillStyle=hexA(rg.c,.48);ctx.fillText(rg.l,lx+7,ly);
   });
 }
-
+function drawConns(){
+  if(!selectedId)return;
+  var conns=CONNECTIONS[selectedId]||[];if(!conns.length)return;
+  var sx,sy;
+  if(selectedId==='exec'){sx=cx;sy=cy;}
+  else{var sp=PLANETS.find(function(p){return p.id===selectedId;});if(!sp)return;sx=sp.x;sy=sp.y;}
+  var col=selectedId==='exec'?TC.exec:(TC[D[selectedId].tier]||TC.exec);
+  var off=-(Date.now()/40%12);
+  conns.forEach(function(tid){
+    var tp=PLANETS.find(function(p){return p.id===tid;});if(!tp)return;
+    var ang=Math.atan2(tp.y-sy,tp.x-sx);
+    var ex=tp.x-Math.cos(ang)*(tp.r+5),ey=tp.y-Math.sin(ang)*(tp.r+5);
+    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex,ey);
+    ctx.strokeStyle=hexA(col,.42);ctx.lineWidth=1.4;ctx.setLineDash([7,5]);ctx.lineDashOffset=off;ctx.stroke();ctx.setLineDash([]);
+    var al=7;
+    ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-Math.cos(ang-.42)*al,ey-Math.sin(ang-.42)*al);
+    ctx.moveTo(ex,ey);ctx.lineTo(ex-Math.cos(ang+.42)*al,ey-Math.sin(ang+.42)*al);
+    ctx.strokeStyle=hexA(col,.75);ctx.lineWidth=1.3;ctx.stroke();
+    ctx.beginPath();ctx.arc(tp.x,tp.y,tp.r+11,0,Math.PI*2);
+    ctx.strokeStyle=hexA(col,.28);ctx.lineWidth=1;ctx.stroke();
+  });
+}
 function drawSun(){
-  const t=Date.now()/1000;
-  const pulse=Math.sin(t*1.4)*.5+.5;
-  // Outer halo
-  const haloR=SUN_R+14+pulse*6;
-  const halo=ctx.createRadialGradient(cx,cy,SUN_R*.6,cx,cy,haloR);
-  halo.addColorStop(0,'rgba(201,153,58,.22)');
-  halo.addColorStop(1,'rgba(201,153,58,0)');
+  var t=Date.now()/1000,pulse=Math.sin(t*1.4)*.5+.5,haloR=SUN_R+12+pulse*5;
+  var halo=ctx.createRadialGradient(cx,cy,SUN_R*.6,cx,cy,haloR);
+  halo.addColorStop(0,'rgba(201,153,58,.2)');halo.addColorStop(1,'rgba(201,153,58,0)');
   ctx.beginPath();ctx.arc(cx,cy,haloR,0,Math.PI*2);ctx.fillStyle=halo;ctx.fill();
-  // Surface
-  ctx.shadowColor='#C9993A';ctx.shadowBlur=selectedId==='exec'?28:18;
-  const sg=ctx.createRadialGradient(cx-SUN_R*.3,cy-SUN_R*.3,SUN_R*.05,cx,cy,SUN_R);
+  ctx.shadowColor='#C9993A';ctx.shadowBlur=selectedId==='exec'?28:16;
+  var sg=ctx.createRadialGradient(cx-SUN_R*.3,cy-SUN_R*.3,SUN_R*.05,cx,cy,SUN_R);
   sg.addColorStop(0,'#FFF0A0');sg.addColorStop(.35,'#E8B84A');sg.addColorStop(1,'#9A6A18');
-  ctx.beginPath();ctx.arc(cx,cy,SUN_R,0,Math.PI*2);ctx.fillStyle=sg;ctx.fill();
-  ctx.shadowBlur=0;
-  // Selection ring
-  if(selectedId==='exec'){
-    ctx.beginPath();ctx.arc(cx,cy,SUN_R+9,0,Math.PI*2);
-    ctx.strokeStyle='rgba(201,153,58,.7)';ctx.lineWidth=.8;
-    ctx.setLineDash([4,5]);ctx.stroke();ctx.setLineDash([]);
-  }
-  // Label
-  const sel=selectedId==='exec';
-  ctx.textAlign='center';ctx.font=`${sel?'600':'400'} 11px Syne`;
-  ctx.fillStyle=sel?'#FFF8E0':'rgba(220,200,140,.75)';
-  ctx.fillText('Executive',cx,cy+SUN_R+16);
-  ctx.font='400 9.5px IBM Plex Mono';
-  ctx.fillStyle=sel?'rgba(220,180,80,.9)':'rgba(160,130,60,.55)';
-  ctx.fillText('6–10 staff',cx,cy+SUN_R+29);
+  ctx.beginPath();ctx.arc(cx,cy,SUN_R,0,Math.PI*2);ctx.fillStyle=sg;ctx.fill();ctx.shadowBlur=0;
+  if(selectedId==='exec'){ctx.beginPath();ctx.arc(cx,cy,SUN_R+9,0,Math.PI*2);ctx.strokeStyle='rgba(201,153,58,.65)';ctx.lineWidth=.8;ctx.setLineDash([4,5]);ctx.stroke();ctx.setLineDash([]);}
+  ctx.textAlign='center';ctx.font=(selectedId==='exec'?'600':'400')+' 11px Syne';
+  ctx.fillStyle=selectedId==='exec'?'#FFF8E0':'rgba(220,200,140,.7)';ctx.fillText('Executive',cx,cy+SUN_R+16);
+  ctx.font='400 9.5px IBM Plex Mono';ctx.fillStyle=selectedId==='exec'?'rgba(220,180,80,.9)':'rgba(160,130,60,.5)';ctx.fillText('6-10 staff',cx,cy+SUN_R+29);
 }
-
-const TRAIL_STEP=0.018;
-const TRAIL_MAX=110;
-
 function drawTrail(p){
-  const t=p.trail;
-  if(t.length<4) return;
-  const col=TC[p.tier];
-  const len=t.length;
-  const q1=Math.floor(len*.4),q2=Math.floor(len*.72),q3=Math.floor(len*.9);
-  // Segment 1: oldest / faintest
-  ctx.beginPath();ctx.moveTo(t[0].x,t[0].y);
-  for(let i=1;i<=q1;i++) ctx.lineTo(t[i].x,t[i].y);
-  ctx.strokeStyle=hexA(col,.07);ctx.lineWidth=.5;ctx.lineCap='round';ctx.stroke();
-  // Segment 2
-  ctx.beginPath();ctx.moveTo(t[q1].x,t[q1].y);
-  for(let i=q1+1;i<=q2;i++) ctx.lineTo(t[i].x,t[i].y);
-  ctx.strokeStyle=hexA(col,.14);ctx.lineWidth=.9;ctx.stroke();
-  // Segment 3
-  ctx.beginPath();ctx.moveTo(t[q2].x,t[q2].y);
-  for(let i=q2+1;i<=q3;i++) ctx.lineTo(t[i].x,t[i].y);
-  ctx.strokeStyle=hexA(col,.26);ctx.lineWidth=1.2;ctx.stroke();
-  // Segment 4: newest / brightest
-  ctx.beginPath();ctx.moveTo(t[q3].x,t[q3].y);
-  for(let i=q3+1;i<len;i++) ctx.lineTo(t[i].x,t[i].y);
-  ctx.strokeStyle=hexA(col,.48);ctx.lineWidth=1.6;ctx.stroke();
+  var t=p.trail;if(t.length<4)return;
+  var col=TC[p.tier],len=t.length;
+  var q1=Math.floor(len*.35),q2=Math.floor(len*.65),q3=Math.floor(len*.87);
+  ctx.lineCap='round';
+  function seg(f,to,op,w){ctx.beginPath();ctx.moveTo(t[f].x,t[f].y);for(var i=f+1;i<=to;i++)ctx.lineTo(t[i].x,t[i].y);ctx.strokeStyle=hexA(col,op);ctx.lineWidth=w;ctx.stroke();}
+  seg(0,q1,.06,.5);seg(q1,q2,.15,.9);seg(q2,q3,.28,1.3);seg(q3,len-1,.52,1.7);
 }
-
 function drawPlanet(p){
-  const col=TC[p.tier];
-  const sel=selectedId===p.id;
-  const hov=hoveredId===p.id;
-  if(sel||hov){
-    const glowG=ctx.createRadialGradient(p.x,p.y,p.r*.4,p.x,p.y,p.r+14);
-    glowG.addColorStop(0,hexA(col,.35));glowG.addColorStop(1,hexA(col,0));
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r+14,0,Math.PI*2);ctx.fillStyle=glowG;ctx.fill();
-  }
+  var col=TC[p.tier],sel=selectedId===p.id,hov=hoveredId===p.id;
+  if(sel||hov){var g=ctx.createRadialGradient(p.x,p.y,p.r*.4,p.x,p.y,p.r+16);g.addColorStop(0,hexA(col,.32));g.addColorStop(1,hexA(col,0));ctx.beginPath();ctx.arc(p.x,p.y,p.r+16,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
   ctx.shadowColor=col;ctx.shadowBlur=sel?18:hov?10:4;
-  const pg=ctx.createRadialGradient(p.x-p.r*.3,p.y-p.r*.3,p.r*.05,p.x,p.y,p.r);
-  pg.addColorStop(0,sel?'#FFFFFF':hexA(col,.9));
-  pg.addColorStop(.5,col);pg.addColorStop(1,hexA(col,.7));
   ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  ctx.fillStyle=sel?pg:hexA(col,hov?.75:.55);ctx.fill();
-  ctx.shadowBlur=0;
-  if(sel){
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r+6,0,Math.PI*2);
-    ctx.strokeStyle=hexA(col,.65);ctx.lineWidth=.7;
-    ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
-  }
-  const lines=p.label.split('\n');
-  const ly=p.y+p.r+13;
-  ctx.textAlign='center';
-  ctx.font=`${sel?'600':'400'} 10px Syne`;
-  ctx.fillStyle=sel?'#DDD8CC':hexA('#C8C4B8',.7);
-  lines.forEach((l,i)=>ctx.fillText(l,p.x,ly+i*12));
-  if(sel||hov){
-    ctx.font='400 9px IBM Plex Mono';
-    ctx.fillStyle=hexA(col,.75);
-    ctx.fillText(p.hc,p.x,ly+lines.length*12+2);
-  }
+  if(sel){var pg=ctx.createRadialGradient(p.x-p.r*.3,p.y-p.r*.3,p.r*.05,p.x,p.y,p.r);pg.addColorStop(0,'#fff');pg.addColorStop(.5,col);pg.addColorStop(1,hexA(col,.7));ctx.fillStyle=pg;}
+  else ctx.fillStyle=hexA(col,hov?.72:.5);
+  ctx.fill();ctx.shadowBlur=0;
+  if(sel){ctx.beginPath();ctx.arc(p.x,p.y,p.r+7,0,Math.PI*2);ctx.strokeStyle=hexA(col,.6);ctx.lineWidth=.7;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);}
+  var lines=p.label.split('\n'),ly=p.y+p.r+14;
+  ctx.textAlign='center';ctx.font=(sel?'600':'400')+' 10px Syne';ctx.fillStyle=sel?'#DDD8CC':hexA('#C8C4B8',.65);
+  lines.forEach(function(l,i){ctx.fillText(l,p.x,ly+i*12);});
+  if(sel||hov){ctx.font='400 9px IBM Plex Mono';ctx.fillStyle=hexA(col,.72);ctx.fillText(p.hc,p.x,ly+lines.length*12+2);}
 }
-
 function draw(){
-  ctx.clearRect(0,0,W,H);
-  drawOrbitRings();
-  // Draw all trails first (behind planets)
-  PLANETS.forEach(p=>{
-    if(p.id!==selectedId) p.angle+=p.speed;
+  ctx.clearRect(0,0,W,H);drawRings();
+  PLANETS.forEach(function(p){
+    p.angle+=p.speed;
     p.x=cx+Math.cos(p.angle)*p.orbitR;
     p.y=cy+Math.sin(p.angle)*p.orbitR;
-    // Accumulate trail by angular step
     if(p.id!==selectedId){
-      const da=Math.abs(p.angle-p._ta);
-      if(da>=TRAIL_STEP||p.trail.length===0){
-        p.trail.push({x:p.x,y:p.y});
-        p._ta=p.angle;
-        if(p.trail.length>TRAIL_MAX) p.trail.shift();
-      }
+      var da=Math.abs(p.angle-p._ta);
+      if(da>=.016||p.trail.length===0){p.trail.push({x:p.x,y:p.y});p._ta=p.angle;if(p.trail.length>120)p.trail.shift();}
     }
-    drawTrail(p);
   });
-  drawSun();
-  PLANETS.forEach(p=>drawPlanet(p));
+  PLANETS.forEach(function(p){if(p.id!==selectedId)drawTrail(p);});
+  drawConns();drawSun();PLANETS.forEach(drawPlanet);
   animId=requestAnimationFrame(draw);
 }
-
-function startAnim(){animId=requestAnimationFrame(draw)}
-
-/* ═══════════════════════════════════════════
-   INTERACTION
-═══════════════════════════════════════════ */
-function getMouse(e){
-  const rc=canvas.getBoundingClientRect();
-  const sx=W/rc.width,sy=H/rc.height;
-  const src=e.touches?e.touches[0]:e;
-  return{x:(src.clientX-rc.left)*sx,y:(src.clientY-rc.top)*sy};
-}
-function dist(x1,y1,x2,y2){return Math.hypot(x2-x1,y2-y1)}
-
-canvas.addEventListener('mousemove',e=>{
-  if(document.getElementById('solar-view').style.display==='none') return;
-  const{x,y}=getMouse(e);
-  let hit=null;
-  if(dist(x,y,cx,cy)<SUN_R+8) hit='exec';
-  else PLANETS.forEach(p=>{if(!hit&&dist(x,y,p.x,p.y)<p.r+9) hit=p.id});
-  canvas.style.cursor=hit?'pointer':'default';
-  hoveredId=hit;
+function startAnim(){animId=requestAnimationFrame(draw);}
+function getMouse(e){var rc=canvas.getBoundingClientRect(),sx=W/rc.width,sy=H/rc.height,src=e.touches?e.touches[0]:e;return{x:(src.clientX-rc.left)*sx,y:(src.clientY-rc.top)*sy};}
+function dist(x1,y1,x2,y2){return Math.hypot(x2-x1,y2-y1);}
+canvas.addEventListener('mousemove',function(e){
+  if(document.getElementById('solar-view').style.display==='none')return;
+  var m=getMouse(e),hit=null;
+  if(dist(m.x,m.y,cx,cy)<SUN_R+8)hit='exec';
+  else PLANETS.forEach(function(p){if(!hit&&dist(m.x,m.y,p.x,p.y)<p.r+9)hit=p.id;});
+  canvas.style.cursor=hit?'pointer':'default';hoveredId=hit;
 });
-
-canvas.addEventListener('click',e=>{
-  const{x,y}=getMouse(e);
-  if(dist(x,y,cx,cy)<SUN_R+10){selectBody('exec');return}
-  let hit=null;
-  PLANETS.forEach(p=>{if(!hit&&dist(x,y,p.x,p.y)<p.r+10) hit=p.id});
-  if(hit) selectBody(hit);
-  else closePanel();
+canvas.addEventListener('click',function(e){
+  var m=getMouse(e);
+  if(dist(m.x,m.y,cx,cy)<SUN_R+12){selectBody('exec');return;}
+  var hit=null;PLANETS.forEach(function(p){if(!hit&&dist(m.x,m.y,p.x,p.y)<p.r+12)hit=p.id;});
+  if(hit)selectBody(hit);else closePanel();
 });
-
-canvas.addEventListener('touchstart',e=>{
-  e.preventDefault();
-  const{x,y}=getMouse(e);
-  if(dist(x,y,cx,cy)<SUN_R+16){selectBody('exec');return}
-  PLANETS.forEach(p=>{if(dist(x,y,p.x,p.y)<p.r+16){selectBody(p.id)}});
-},{passive:false});
-
-function selectBody(id){
-  selectedId=id;
-  buildPanel(id);
-  const panel=document.getElementById('panel');
-  const col=TC[D[id].tier];
-  panel.style.borderLeftColor=hexA(col,.3);
-  panel.classList.add('open');
-}
-function closePanel(){
-  if(selectedId){
-    const p=PLANETS.find(pl=>pl.id===selectedId);
-    if(p){p.trail=[];p._ta=p.angle;}
-  }
-  selectedId=null;
-  document.getElementById('panel').classList.remove('open');
-}
-
-window.addEventListener('resize',()=>{
-  if(document.getElementById('solar-view').style.display!=='none') resizeCanvas();
-});
-
-/* ═══════════════════════════════════════════
-   PANEL BUILDER
-═══════════════════════════════════════════ */
+canvas.addEventListener('touchstart',function(e){e.preventDefault();var m=getMouse(e);if(dist(m.x,m.y,cx,cy)<SUN_R+18){selectBody('exec');return;}PLANETS.forEach(function(p){if(dist(m.x,m.y,p.x,p.y)<p.r+18)selectBody(p.id);});},{passive:false});
+function selectBody(id){selectedId=id;buildPanel(id);var panel=document.getElementById('panel');panel.style.borderLeftColor=hexA(TC[D[id]?D[id].tier:'exec']||TC.exec,.3);panel.classList.add('open');}
+function closePanel(){selectedId=null;document.getElementById('panel').classList.remove('open');}
+window.addEventListener('resize',function(){if(document.getElementById('solar-view').style.display!=='none')resizeCanvas();else if(document.getElementById('pillars-view').style.display!=='none')drawPillarsCanvas();});
+var VS={Public:{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'},Internal:{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},Confidential:{bg:'rgba(200,90,90,.1)',bd:'rgba(200,90,90,.3)',tx:'#E07878'}};
+var PS={'Activate Now':{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'},'Needs Partners':{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},'Needs Funding':{bg:'rgba(98,152,208,.1)',bd:'rgba(98,152,208,.3)',tx:'#6298D0'}};
+var OS={'VUC Direct':{bg:'rgba(155,143,220,.1)',bd:'rgba(155,143,220,.3)',tx:'#9B8FDC'},'External Lead':{bg:'rgba(98,152,208,.1)',bd:'rgba(98,152,208,.3)',tx:'#6298D0'},'Co-governed':{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'}};
+function badge(l,s){return '<span class="badge" style="background:'+s.bg+';border-color:'+s.bd+';color:'+s.tx+'">'+l+'</span>';}
 function buildPanel(id){
-  const dept=D[id],col=TC[dept.tier],dim=TD[dept.tier];
-  const pc=document.getElementById('panel-content');
-  pc.innerHTML=`
-    <div class="dp-head">
-      <span class="dp-icon" style="color:${col}">${dept.icon}</span>
-      <div>
-        <div class="dp-tier" style="color:${col}">${dept.tierLabel}</div>
-        <h2 class="dp-title">${dept.name}</h2>
-      </div>
-    </div>
-    <p class="dp-fn">${dept.fn}</p>
-    <div class="dp-hc-row" style="background:${dim}">
-      <span class="dp-hc-label">Estimated team size</span>
-      <span class="dp-hc-val" style="color:${col}">${dept.hc}</span>
-    </div>
-    <div class="dp-sub-hdr">Sub-teams</div>
-    ${dept.sub.map(st=>`
-      <div class="dp-sc" style="background:${dim};border-color:${hexA(col,.18)}">
-        <div class="dp-sc-row">
-          <span class="dp-sc-name">${st.n}</span>
-          <span class="dp-sc-hc" style="color:${col};background:${hexA(col,.12)}">${st.hc}</span>
-        </div>
-        <ul>${st.roles.map(r=>`<li>${r}</li>`).join('')}</ul>
-      </div>
-    `).join('')}
-  `;
+  var dept=D[id],col=TC[dept.tier],dim=dept.tier==='exec'?'rgba(201,153,58,.1)':({t1:'rgba(155,143,220,.1)',t2:'rgba(98,152,208,.1)',t3:'rgba(70,180,170,.1)'}[dept.tier]||'rgba(255,255,255,.05)');
+  var h='<div class="dp-head"><span class="dp-icon" style="color:'+col+'">'+dept.icon+'</span>';
+  h+='<div><div class="dp-tier" style="color:'+col+'">'+dept.tierLabel+'</div><h2 class="dp-title">'+dept.name+'</h2></div></div>';
+  h+='<div class="dp-bdg">'+badge(dept.owner,OS[dept.owner]||OS['VUC Direct'])+badge(dept.visibility,VS[dept.visibility]||VS['Internal'])+badge(dept.phase,PS[dept.phase]||PS['Needs Partners'])+'</div>';
+  h+='<p class="dp-fn">'+dept.fn+'</p>';
+  h+='<div class="dp-hcr" style="background:'+dim+'"><span class="dp-hcl">Team size</span><span class="dp-hcv" style="color:'+col+'">'+dept.hc+'</span></div>';
+  h+='<div class="dp-sec"><div class="dp-sh">Mandate</div><p class="dp-mand">'+dept.mandate+'</p></div>';
+  h+='<div class="dp-sec"><div class="dp-sh">Year 1 Deliverables</div><ul class="dp-list">'+dept.deliverables.map(function(d){return '<li>'+d+'</li>';}).join('')+'</ul></div>';
+  h+='<div class="dp-sec"><div class="dp-sh">Required Partners</div><div class="dp-chips">'+dept.partners.map(function(p){return '<span class="dp-chip">'+p+'</span>';}).join('')+'</div></div>';
+  h+='<div class="dp-sec"><div class="dp-sh">KPIs</div><ul class="dp-list">'+dept.kpis.map(function(k){return '<li>'+k+'</li>';}).join('')+'</ul></div>';
+  document.getElementById('pcontent').innerHTML=h;
 }
-
-/* ═══════════════════════════════════════════
-   LIST VIEW BUILDER
-═══════════════════════════════════════════ */
-const TIERS=[
-  {label:'Executive',lc:'tl-exec',depts:['exec'],rowClass:'row-1'},
-  {label:'Tier 1 — VUC Core Nucleus',lc:'tl-t1',depts:['strategy','intelligence','science','narrative'],rowClass:'row-4'},
-  {label:'Tier 2 — Externally Populated',lc:'tl-t2',depts:['capital','institutional','governance','ecosystem','continuity','expansion'],rowClass:'row-6'},
-  {label:'Tier 3 — Co-governed',lc:'tl-t3',depts:['operations','technology'],rowClass:'row-2'},
+var TIERS=[
+  {lbl:'Executive',cls:'tle',dids:['exec'],row:'r1',nc:'ec',hc:'hce',bc:'sbe',nc2:'ne'},
+  {lbl:'Tier 1 — VUC Core Nucleus',cls:'tl1',dids:['strategy','intelligence','science','narrative'],row:'r4',nc:'c1',hc:'hc1',bc:'sb1',nc2:'n1'},
+  {lbl:'Tier 3 — Co-governed (inner delivery orbit)',cls:'tl3',dids:['operations','technology'],row:'r2',nc:'c3',hc:'hc3',bc:'sb3',nc2:'n3'},
+  {lbl:'Tier 2 — Externally Populated (outer orbit)',cls:'tl2',dids:['capital','institutional','governance','ecosystem','continuity','expansion'],row:'r6',nc:'c2',hc:'hc2',bc:'sb2',nc2:'n2'}
 ];
-
-let listBuilt=false;
+var listBuilt=false,listOpen=null,customSubs={};
 function buildListView(){
-  if(listBuilt) return;
-  listBuilt=true;
-  const cont=document.getElementById('list-content');
-  TIERS.forEach((tier,ti)=>{
-    if(ti>0){const g=document.createElement('div');g.className='tier-gap';cont.appendChild(g)}
-    const sec=document.createElement('div');sec.className='tier-section';
-    sec.innerHTML=`<div class="tier-label ${tier.lc}"><span>${tier.label}</span></div>`;
-    const row=document.createElement('div');row.className=`tier-row ${tier.rowClass}`;
-    tier.depts.forEach(id=>{
-      const dept=D[id],col=TC[dept.tier];
-      const hcCls=`hc-${dept.tier}`;
-      const card=document.createElement('div');
-      card.className=`dc ${dept.tier}-c`;card.id=`ldc-${id}`;
-      card.innerHTML=`<span class="dc-icon" style="color:${col}">${dept.icon}</span><div class="dc-name">${dept.name}</div><div class="dc-desc">${dept.fn.slice(0,72)}…</div><div class="dc-foot"><span class="dc-hc ${hcCls}">${dept.hc}</span><span class="dc-toggle"><em class="dc-arr">▾</em>&nbsp;${dept.sub.length} units</span></div>`;
-      card.onclick=()=>toggleListCard(id,card,dept,col);
+  if(listBuilt)return;listBuilt=true;
+  var cont=document.getElementById('list-content');
+  TIERS.forEach(function(tier,ti){
+    if(ti>0){var g=document.createElement('div');g.className='tgap';cont.appendChild(g);}
+    var sec=document.createElement('div');sec.className='tier-sec';
+    sec.innerHTML='<div class="tier-lbl '+tier.cls+'"><span>'+tier.lbl+'</span></div>';
+    var row=document.createElement('div');row.className='trow '+tier.row;
+    tier.dids.forEach(function(id){
+      var dept=D[id],col=TC[dept.tier]||TC.exec;
+      var card=document.createElement('div');
+      card.className='dc '+tier.nc;card.id='ldc-'+id;
+      card.innerHTML='<span class="dc-icon" style="color:'+col+'">'+dept.icon+'</span>'
+        +'<div class="dc-name">'+dept.name+'</div>'
+        +'<div class="dc-desc">'+dept.fn.substring(0,70)+'&hellip;</div>'
+        +'<div class="dc-foot"><span class="hcbadge '+tier.hc+'">'+dept.hc+'</span>'
+        +'<span class="dc-tog"><em class="arr">&#9662;</em>&nbsp;'+dept.sub.length+' units</span></div>';
+      card.onclick=(function(cid,cc){return function(e){if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON')return;toggleCard(cid,cc);};})(id,card);
       row.appendChild(card);
     });
     sec.appendChild(row);
-    tier.depts.forEach(id=>{
-      const dept=D[id];
-      const sp=document.createElement('div');
-      sp.className='sub-panel';sp.id=`lsp-${id}`;
-      sp.innerHTML=`<div class="sp-inner"><div class="sp-notch ${dept.tier}-n" id="lnx-${id}"></div><div class="sp-bar ${dept.tier}-bar" id="lsb-${id}"></div></div>`;
+    tier.dids.forEach(function(id){
+      var dept=D[id];
+      var sp=document.createElement('div');sp.className='subp';sp.id='lsp-'+id;
+      sp.innerHTML='<div class="sp-inner"><div class="notch '+tier.nc2+'" id="lnx-'+id+'"></div><div class="sp-bar '+tier.bc+'" id="lsb-'+id+'"></div></div>';
       sec.appendChild(sp);
     });
     cont.appendChild(sec);
   });
 }
-
-let listOpen=null;
-function toggleListCard(id,card,dept,col){
-  const sp=document.getElementById('lsp-'+id);
-  const sb=document.getElementById('lsb-'+id);
-  // Build sub-cards if not yet built
-  if(!sb.children.length){
-    dept.sub.forEach(st=>{
-      const sc=document.createElement('div');sc.className='sc';
-      sc.innerHTML=`<div class="sc-head"><span class="sc-name">${st.n}</span><span class="sc-hc hc-${dept.tier}">${st.hc}</span></div><ul class="sc-roles">${st.roles.map(r=>`<li>${r}</li>`).join('')}</ul>`;
-      sb.appendChild(sc);
+function buildSubCard(id,si,st,col,tier){
+  var owners=getOwners(id,si);
+  var wrap=document.createElement('div');wrap.className='stcard';
+  var headDiv=document.createElement('div');headDiv.className='stcard-head';
+  var nameInput=document.createElement('input');nameInput.type='text';nameInput.className='stname';nameInput.value=st.n;nameInput.placeholder='Sub-team name';
+  nameInput.oninput=function(){
+    var csub=customSubs[id]||(customSubs[id]=[].concat(D[id].sub.map(function(s){return {n:s.n,hc:s.hc,roles:s.roles};})));
+    if(csub[si])csub[si].n=this.value;
+  };
+  var delBtn=document.createElement('button');delBtn.className='del-sub';delBtn.innerHTML='&#x2715;';delBtn.title='Remove sub-team';
+  delBtn.onclick=function(){
+    var csub=customSubs[id]||(customSubs[id]=[].concat(D[id].sub.map(function(s){return {n:s.n,hc:s.hc,roles:s.roles};})));
+    csub.splice(si,1);
+    rebuildBar(id,col,tier);
+  };
+  var hcSpan=document.createElement('span');hcSpan.className='sthc hc'+tier[0];hcSpan.innerHTML=st.hc;
+  headDiv.appendChild(nameInput);headDiv.appendChild(hcSpan);headDiv.appendChild(delBtn);
+  wrap.appendChild(headDiv);
+  var ul=document.createElement('ul');ul.className='st-roles';
+  st.roles.forEach(function(r){var li=document.createElement('li');li.innerHTML=r;ul.appendChild(li);});
+  wrap.appendChild(ul);
+  var ownersBlock=document.createElement('div');ownersBlock.className='owners-block';
+  ownersBlock.innerHTML='<div class="owners-lbl">Owners / Assigned</div>';
+  var ownerList=document.createElement('div');ownerList.id='ol-'+id+'-'+si;
+  function renderOwners(){
+    ownerList.innerHTML='';
+    var arr=getOwners(id,si);
+    arr.forEach(function(ow,oi){
+      var row=document.createElement('div');row.className='owner-row';
+      var ni=document.createElement('input');ni.type='text';ni.className='oi on';ni.placeholder='Name';ni.value=ow.name||'';
+      ni.oninput=(function(idx){return function(){var a=getOwners(id,si);a[idx].name=this.value;setOwners(id,si,a);};})(oi);
+      var ti=document.createElement('input');ti.type='text';ti.className='oi ot';ti.placeholder='Role / Title';ti.value=ow.title||'';
+      ti.oninput=(function(idx){return function(){var a=getOwners(id,si);a[idx].title=this.value;setOwners(id,si,a);};})(oi);
+      var db=document.createElement('button');db.className='odel';db.innerHTML='&#x2212;';
+      db.onclick=(function(idx){return function(){var a=getOwners(id,si);if(a.length>1){a.splice(idx,1);setOwners(id,si,a);renderOwners();}else{a[0]={name:'',title:''};setOwners(id,si,a);renderOwners();}};})(oi);
+      row.appendChild(ni);row.appendChild(ti);row.appendChild(db);ownerList.appendChild(row);
     });
+    var addBtn=document.createElement('button');addBtn.className='add-owner';addBtn.textContent='+ Add person';
+    addBtn.onclick=function(){var a=getOwners(id,si);a.push({name:'',title:''});setOwners(id,si,a);renderOwners();};
+    ownerList.appendChild(addBtn);
   }
-  const isOpen=sp.classList.contains('open');
-  // Close any open panel
-  if(listOpen&&listOpen!==id){
-    document.getElementById(`lsp-${listOpen}`).classList.remove('open');
-    document.getElementById(`ldc-${listOpen}`).classList.remove('open');
+  renderOwners();
+  ownersBlock.appendChild(ownerList);wrap.appendChild(ownersBlock);
+  return wrap;
+}
+function rebuildBar(id,col,tier){
+  var sb=document.getElementById('lsb-'+id);if(!sb)return;
+  sb.innerHTML='';
+  var subs=customSubs[id]||D[id].sub;
+  subs.forEach(function(st,si){sb.appendChild(buildSubCard(id,si,st,col,tier));});
+  var addBtn=document.createElement('button');addBtn.className='add-sub';addBtn.textContent='+ Add sub-team';
+  addBtn.onclick=function(){
+    var csub=customSubs[id]||(customSubs[id]=[].concat(D[id].sub.map(function(s){return {n:s.n,hc:s.hc,roles:s.roles};})));
+    csub.push({n:'New Sub-team',hc:'TBD',roles:['Define roles']});
+    rebuildBar(id,col,tier);
+  };
+  sb.appendChild(addBtn);
+}
+function toggleCard(id,card){
+  var dept=D[id],col=TC[dept.tier]||TC.exec;
+  var sp=document.getElementById('lsp-'+id),sb=document.getElementById('lsb-'+id);
+  var tier=dept.tier;
+  if(!sb.children.length){
+    customSubs[id]=customSubs[id]||D[id].sub.map(function(s){return{n:s.n,hc:s.hc,roles:s.roles};});
+    rebuildBar(id,col,tier);
   }
+  var isOpen=sp.classList.contains('open');
+  if(listOpen&&listOpen!==id){document.getElementById('lsp-'+listOpen).classList.remove('open');document.getElementById('ldc-'+listOpen).classList.remove('open');}
   if(!isOpen){
     sp.classList.add('open');card.classList.add('open');listOpen=id;
-    requestAnimationFrame(()=>{
-      const cr=card.getBoundingClientRect();
-      const sr=sp.querySelector('.sp-inner').getBoundingClientRect();
-      const nx=document.getElementById('lnx-'+id);
-      nx.style.setProperty('--nx',(cr.left+cr.width/2-sr.left)+'px');
+    requestAnimationFrame(function(){var cr=card.getBoundingClientRect(),sr=sp.querySelector('.sp-inner').getBoundingClientRect();var nx=document.getElementById('lnx-'+id);nx.style.setProperty('--nx',(cr.left+cr.width/2-sr.left)+'px');});
+  } else {sp.classList.remove('open');card.classList.remove('open');listOpen=null;}
+}
+var pc=document.getElementById('pillars-canvas'),pctx=pc.getContext('2d');
+var pvHover=null,pvBuilt=false;
+function drawPillarsCanvas(){
+  var cont=document.getElementById('pillars-view');if(cont.style.display==='none')return;
+  var w=pc.parentElement.clientWidth,h=Math.min(Math.round(w*.45),380);
+  pc.style.width=w+'px';pc.style.height=h+'px';pc.width=w*DPR;pc.height=h*DPR;
+  pctx.setTransform(DPR,0,0,DPR,0,0);
+  pctx.clearRect(0,0,w,h);
+  var PCOLORS=['#9B8FDC','#6298D0','#C9993A','#46B4AA'];
+  var DNAMES={strategy:'Strategy',intelligence:'Intelligence',science:'Science',narrative:'Narrative',capital:'Capital',institutional:'Institutional',governance:'Governance',ecosystem:'Ecosystem',continuity:'Continuity',expansion:'Expansion',operations:'Operations',technology:'Technology'};
+  var DCOLS={strategy:TC.t1,intelligence:TC.t1,science:TC.t1,narrative:TC.t1,operations:TC.t3,technology:TC.t3,capital:TC.t2,institutional:TC.t2,governance:TC.t2,ecosystem:TC.t2,continuity:TC.t2,expansion:TC.t2};
+  var allDomains=['science','narrative','operations','technology','expansion','intelligence','ecosystem','institutional','capital','governance'];
+  var PW=160,PH=36,pm=18,PY=pm;
+  var pillarBoxes=[];
+  PILLARS.forEach(function(pil,pi){
+    var px=pm,py=PY+pi*(PH+16);
+    pillarBoxes.push({id:pil.id,x:px,y:py,w:PW,h:PH,col:PCOLORS[pi],pil:pil,pi:pi});
+  });
+  var totalDomains=allDomains.length;
+  var DW=80,DH=28,dm=6;
+  var domainBoxes={};
+  var startX=PW+pm*3,availH=h-pm*2;
+  allDomains.forEach(function(did,di){
+    var dy=pm+di*(availH/totalDomains);
+    domainBoxes[did]={id:did,x:startX,y:dy,w:DW,h:DH,col:DCOLS[did]||TC.t2};
+  });
+  PILLARS.forEach(function(pil,pi){
+    var pb=pillarBoxes[pi];
+    var active=pvHover===null||pvHover===pi;
+    var alpha=active?0.35:0.06;
+    pil.domains.forEach(function(did){
+      var db=domainBoxes[did];if(!db)return;
+      var sx=pb.x+pb.w,sy=pb.y+pb.h/2;
+      var ex=db.x,ey=db.y+db.h/2;
+      var cpx=(sx+ex)/2;
+      pctx.beginPath();pctx.moveTo(sx,sy);pctx.bezierCurveTo(cpx,sy,cpx,ey,ex,ey);
+      pctx.strokeStyle=hexA(pb.col,pvHover===pi?0.6:alpha);
+      pctx.lineWidth=pvHover===pi?1.8:1;pctx.setLineDash([]);pctx.stroke();
     });
-  } else {
-    sp.classList.remove('open');card.classList.remove('open');listOpen=null;
-  }
+  });
+  pillarBoxes.forEach(function(pb,pi){
+    var sel=pvHover===pi,active=pvHover===null||sel;
+    var alpha=active?1:.4;
+    pctx.beginPath();pctx.roundRect?pctx.roundRect(pb.x,pb.y,pb.w,pb.h,5):pctx.rect(pb.x,pb.y,pb.w,pb.h);
+    pctx.fillStyle=hexA(pb.col,sel?.2:.1);pctx.fill();
+    pctx.strokeStyle=hexA(pb.col,sel?.8:.4);pctx.lineWidth=sel?1.2:.6;pctx.stroke();
+    pctx.font='500 10.5px IBM Plex Mono';pctx.textAlign='left';pctx.fillStyle=hexA(pb.col,alpha);
+    pctx.fillText(PILLARS[pi].num,pb.x+8,pb.y+pb.h/2+1);
+    pctx.font='500 11px Syne';pctx.fillStyle='rgba(220,215,200,'+alpha+')';
+    pctx.fillText(PILLARS[pi].name,pb.x+36,pb.y+pb.h/2+4);
+  });
+  Object.values(domainBoxes).forEach(function(db){
+    var active=pvHover===null||PILLARS[pvHover].domains.indexOf(db.id)>=0;
+    var alpha=active?1:.3;
+    pctx.beginPath();pctx.roundRect?pctx.roundRect(db.x,db.y,db.w,db.h,4):pctx.rect(db.x,db.y,db.w,db.h);
+    pctx.fillStyle=hexA(db.col,active?.12:.05);pctx.fill();
+    pctx.strokeStyle=hexA(db.col,active?.55:.2);pctx.lineWidth=.7;pctx.stroke();
+    pctx.font='400 9px IBM Plex Mono';pctx.textAlign='middle';pctx.fillStyle=hexA(db.col,alpha);
+    pctx.textAlign='center';pctx.fillText(DNAMES[db.id]||db.id,db.x+db.w/2,db.y+db.h/2+4);
+  });
+  pctx.font='400 9px IBM Plex Mono';pctx.fillStyle='rgba(120,120,100,.35)';pctx.textAlign='left';
+  pctx.fillText('Pillars',pm,h-6);pctx.fillText('Domains activated',startX,h-6);
 }
-
-/* ═══════════════════════════════════════════
-   VIEW TOGGLE
-═══════════════════════════════════════════ */
-function switchView(v){
-  const sv=document.getElementById('solar-view');
-  const lv=document.getElementById('list-view');
-  const bs=document.getElementById('btn-solar');
-  const bl=document.getElementById('btn-list');
-  if(v==='solar'){
-    sv.style.display='';lv.style.display='none';
-    bs.classList.add('active');bl.classList.remove('active');
-    if(!animId) resizeCanvas();
-  } else {
-    sv.style.display='none';lv.style.display='block';
-    bl.classList.add('active');bs.classList.remove('active');
-    closePanel();buildListView();
-  }
-}
-
-/* ═══════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════ */
-document.fonts.ready.then(()=>{
-  resizeCanvas();
+pc.addEventListener('mousemove',function(e){
+  var rc=pc.getBoundingClientRect(),mx=(e.clientX-rc.left)*(pc.width/DPR/rc.width),my=(e.clientY-rc.top)*(pc.height/DPR/rc.height);
+  var PW=160,PH=36,pm=18;
+  var hit=null;
+  PILLARS.forEach(function(_,pi){var py=pm+pi*(PH+16);if(mx>=pm&&mx<=pm+PW&&my>=py&&my<=py+PH)hit=pi;});
+  if(hit!==pvHover){pvHover=hit;drawPillarsCanvas();}
 });
+pc.addEventListener('mouseleave',function(){pvHover=null;drawPillarsCanvas();});
+function buildPillarsCards(){
+  if(pvBuilt)return;pvBuilt=true;
+  var grid=document.getElementById('pv-cards');
+  PILLARS.forEach(function(pil,pi){
+    var col=['#9B8FDC','#6298D0','#C9993A','#46B4AA'][pi];
+    var card=document.createElement('div');card.className='pc';
+    card.style.borderColor=hexA(col,.25);
+    var chips=pil.domains.map(function(did){
+      var dc=TC[D[did]?D[did].tier:'t2']||TC.t2;
+      return '<span class="pc-chip" style="background:'+hexA(dc,.09)+';border-color:'+hexA(dc,.3)+';color:'+dc+'">'+D[did].icon+' '+D[did].name+'</span>';
+    }).join('');
+    card.innerHTML='<div class="pc-ey" style="color:'+col+'">Pillar '+pil.num+'</div>'
+      +'<div class="pc-ti">'+pil.name+'</div>'
+      +'<p class="pc-de">'+pil.desc+'</p>'
+      +'<p class="pc-note">'+pil.note+'</p>'
+      +'<div class="pc-dh">Activated by</div>'
+      +'<div class="pc-chips">'+chips+'</div>';
+    grid.appendChild(card);
+  });
+}
+function switchView(v){
+  ['solar','list','pillars'].forEach(function(n){
+    document.getElementById(n+'-view').style.display='none';
+    document.getElementById('btn-'+n).classList.remove('active');
+  });
+  document.getElementById(v+'-view').style.display='block';
+  document.getElementById('btn-'+v).classList.add('active');
+  if(v==='solar'){
+    document.getElementById('solar-view').style.display='';
+    if(!animId)resizeCanvas();
+  } else if(v==='list'){
+    closePanel();buildListView();
+  } else {
+    closePanel();
+    requestAnimationFrame(function(){drawPillarsCanvas();buildPillarsCards();});
+  }
+}
+document.fonts.ready.then(function(){resizeCanvas();});
 </script>
 </body>
 </html>
