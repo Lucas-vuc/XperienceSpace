@@ -76,7 +76,7 @@ h1 em{font-style:normal;color:var(--gl)}
 /* SOLAR */
 #solar-view{position:relative;border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05)}
 #solar-canvas{display:block;width:100%}
-.chint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;
+.chint{position:absolute;top:13px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;
   font-size:9.5px;letter-spacing:.12em;color:rgba(255,255,255,.18);white-space:nowrap;pointer-events:none}
 .cleg{position:absolute;bottom:16px;right:18px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .cli{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;color:rgba(180,176,164,.5)}
@@ -183,7 +183,18 @@ h1 em{font-style:normal;color:var(--gl)}
 /* PILLARS VIEW */
 #pillars-view{display:none}
 .pv-intro{font-size:13px;font-weight:300;color:var(--tx2);max-width:640px;margin:0 auto 20px;text-align:center;line-height:1.75;font-style:italic}
-.pv-wrap{border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05);margin-bottom:20px}
+.pv-wrap{border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05);margin-bottom:12px;position:relative}
+#pv-tip{position:fixed;background:rgba(6,10,20,.97);border:.5px solid var(--tx3);border-radius:8px;
+  padding:11px 14px;max-width:280px;pointer-events:none;z-index:300;display:none;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.pvt-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:#EDE8DC;margin-bottom:3px}
+.pvt-tier{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.pvt-fn{font-size:11.5px;font-weight:300;color:var(--tx2);line-height:1.6;margin-bottom:6px}
+.pvt-click{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3)}
+#pv-domain-panel{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s;
+  opacity:0;margin-bottom:0;border-radius:var(--rl);border:.5px solid transparent}
+#pv-domain-panel.open{max-height:500px;opacity:1;margin-bottom:16px}
+.pvp-inner{padding:18px 20px}
 #pillars-canvas{display:block;width:100%}
 .pv-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
 .pc{border-radius:var(--rl);padding:18px 20px;border:.5px solid;transition:border-color .2s}
@@ -255,6 +266,8 @@ footer{margin-top:60px;padding-top:22px;border-top:.5px solid rgba(201,153,58,.0
 <div id="pillars-view">
   <p class="pv-intro">Hover the diagram to explore pillar&ndash;domain connections. Each pillar activates a specific cluster of operational domains — all rest on shared VUC infrastructure.</p>
   <div class="pv-wrap"><canvas id="pillars-canvas"></canvas></div>
+  <div id="pv-domain-panel"></div>
+  <div id="pv-tip"><div class="pvt-name" id="pvt-name"></div><div class="pvt-tier" id="pvt-tier"></div><div class="pvt-fn" id="pvt-fn"></div><div class="pvt-click">Click to expand details</div></div>
   <div class="pv-cards" id="pv-cards"></div>
   <div class="cc">
     <div class="cc-hdr">Cross-cutting infrastructure — all 4 pillars</div>
@@ -606,15 +619,16 @@ function toggleCard(id,card){
   } else {sp.classList.remove('open');card.classList.remove('open');listOpen=null;}
 }
 var pc=document.getElementById('pillars-canvas'),pctx=pc.getContext('2d');
-var pvHover=null,pvBuilt=false;
+var pvHover=null,pvBuilt=false,pvChips=[],pvChipsBuf=[],pvChipHover=null;
 var TIER_MAP={t1:{label:'Tier 1 — VUC Core',col:TC.t1,short:'T1'},t3:{label:'Tier 3 — Co-governed',col:TC.t3,short:'T3'},t2:{label:'Tier 2 — External',col:TC.t2,short:'T2'}};
 var TKEY=['t1','t3','t2'];
 function getPillarTierDomains(pil,tierKey){return pil.domains.filter(function(did){return D[did]&&D[did].tier===tierKey;});}
 function drawPillarsCanvas(){
   var cont=document.getElementById('pillars-view');if(cont.style.display==='none')return;
+  pvChipsBuf=[];
   var w=pc.parentElement.clientWidth;
   var PAD=20,PILL_W=130,GAP=10,TIER_W=Math.max(140,Math.floor((w-PAD*2-PILL_W-GAP*4)/3));
-  var ROW_H=90,HEADER_H=44,h=HEADER_H+4*ROW_H+PAD*2+20;
+  var ROW_H=124,HEADER_H=46,h=HEADER_H+4*ROW_H+PAD*2+20;
   pc.style.width=w+'px';pc.style.height=h+'px';pc.width=w*DPR;pc.height=h*DPR;
   pctx.setTransform(DPR,0,0,DPR,0,0);
   pctx.clearRect(0,0,w,h);
@@ -666,19 +680,17 @@ function drawPillarsCanvas(){
         pctx.font='300 9px IBM Plex Mono';pctx.textAlign='center';pctx.fillStyle='rgba(80,78,72,.4)';
         pctx.fillText('—',cellX+cellW/2,cellY+cellH/2+3);
       } else {
-        var chipH=15,chipPad=5,chipGap=4,startY=cellY+8;
+        var chipH=18,chipPad=5,chipGap=5,startY=cellY+8;
         doms.forEach(function(did,di){
-          var dname=D[did].name.replace(' & ',' &\n').replace(' and ',' &\n');
-          var short=(did.charAt(0).toUpperCase()+did.slice(1)).substring(0,9);
           var chipW=cellW-chipPad*2;
           var chipX=cellX+chipPad,chipY=startY+di*(chipH+chipGap);
           if(chipY+chipH>cellY+cellH-4)return;
+          pvChipsBuf.push({did:did,x:chipX,y:chipY,w:chipW,h:chipH});
           pctx.beginPath();pctx.roundRect?pctx.roundRect(chipX,chipY,chipW,chipH,3):pctx.rect(chipX,chipY,chipW,chipH);
           pctx.fillStyle=hexA(tm.col,active?.16:.06);pctx.fill();
           pctx.strokeStyle=hexA(tm.col,active?.5:.18);pctx.lineWidth=.5;pctx.stroke();
-          var dname2=D[did].name;if(dname2.length>13)dname2=dname2.substring(0,12)+'…';
           pctx.font='400 8.5px IBM Plex Mono';pctx.textAlign='left';pctx.fillStyle=hexA(tm.col,active?.9:.35);
-          pctx.fillText(decodeEntity(D[did].icon)+' '+dname2,chipX+4,chipY+chipH/2+3);
+          pctx.fillText(decodeEntity(D[did].icon)+' '+D[did].name,chipX+5,chipY+chipH/2+3.5);
         });
       }
     });
@@ -688,15 +700,74 @@ function drawPillarsCanvas(){
   /* Pillar label column header */
   pctx.font='300 9px IBM Plex Mono';pctx.fillStyle='rgba(120,115,100,.45)';pctx.textAlign='left';
   pctx.fillText('Pillars',PAD+4,PAD+14);
+  pvChips=pvChipsBuf;
 }
 pc.addEventListener('mousemove',function(e){
-  var rc=pc.getBoundingClientRect(),mx=(e.clientX-rc.left)*(pc.width/DPR/rc.width),my=(e.clientY-rc.top)*(pc.height/DPR/rc.height);
-  var PAD=20,PILL_W=130,HEADER_H=44,ROW_H=90;
-  var hit=null;
-  PILLARS.forEach(function(_,pi){var rowY=PAD+HEADER_H+pi*ROW_H;if(mx>=PAD&&mx<=PAD+PILL_W&&my>=rowY&&my<=rowY+ROW_H)hit=pi;});
-  if(hit!==pvHover){pvHover=hit;drawPillarsCanvas();}
+  var rc=pc.getBoundingClientRect();
+  var scaleX=(pc.width/DPR)/rc.width,scaleY=(pc.height/DPR)/rc.height;
+  var mx=(e.clientX-rc.left)*scaleX,my=(e.clientY-rc.top)*scaleY;
+  var PAD=20,PILL_W=130,HEADER_H=46,ROW_H=124;
+  var pilHit=null,chipHit=null;
+  PILLARS.forEach(function(_,pi){var rowY=PAD+HEADER_H+pi*ROW_H;if(mx>=PAD&&mx<=PAD+PILL_W&&my>=rowY&&my<=rowY+ROW_H)pilHit=pi;});
+  pvChips.forEach(function(c){if(mx>=c.x&&mx<=c.x+c.w&&my>=c.y&&my<=c.y+c.h)chipHit=c;});
+  var tip=document.getElementById('pv-tip');
+  if(chipHit){
+    pc.style.cursor='pointer';
+    if(pvChipHover!==chipHit.did){
+      pvChipHover=chipHit.did;
+      var dept=D[chipHit.did],col=TC[dept.tier]||TC.t2;
+      document.getElementById('pvt-name').textContent=dept.name;
+      var te=document.getElementById('pvt-tier');te.textContent=dept.tierLabel;te.style.color=col;
+      document.getElementById('pvt-fn').textContent=dept.fn;
+      tip.style.borderColor=hexA(col,.45);
+    }
+    var tx=e.clientX+16,ty=e.clientY-10;
+    if(tx+290>window.innerWidth)tx=e.clientX-306;
+    tip.style.left=tx+'px';tip.style.top=ty+'px';tip.style.display='block';
+    if(pvHover!==null){pvHover=null;drawPillarsCanvas();}
+  } else {
+    if(pvChipHover){pvChipHover=null;tip.style.display='none';}
+    pc.style.cursor=pilHit!==null?'pointer':'default';
+    if(pilHit!==pvHover){pvHover=pilHit;drawPillarsCanvas();}
+  }
 });
-pc.addEventListener('mouseleave',function(){pvHover=null;drawPillarsCanvas();});
+pc.addEventListener('mouseleave',function(){
+  pvHover=null;pvChipHover=null;
+  document.getElementById('pv-tip').style.display='none';
+  drawPillarsCanvas();
+});
+pc.addEventListener('click',function(e){
+  var rc=pc.getBoundingClientRect();
+  var scaleX=(pc.width/DPR)/rc.width,scaleY=(pc.height/DPR)/rc.height;
+  var mx=(e.clientX-rc.left)*scaleX,my=(e.clientY-rc.top)*scaleY;
+  var hit=null;
+  pvChips.forEach(function(c){if(mx>=c.x&&mx<=c.x+c.w&&my>=c.y&&my<=c.y+c.h)hit=c;});
+  if(hit)showPvDomainPanel(hit.did);
+});
+function showPvDomainPanel(id){
+  var dept=D[id],col=TC[dept.tier]||TC.t2;
+  var dim={exec:'rgba(201,153,58,.1)',t1:'rgba(139,126,216,.1)',t2:'rgba(90,142,196,.1)',t3:'rgba(63,173,162,.1)'}[dept.tier]||'rgba(255,255,255,.05)';
+  var pnl=document.getElementById('pv-domain-panel');
+  if(pnl._openId===id&&pnl.classList.contains('open')){pnl.classList.remove('open');pnl._openId=null;return;}
+  pnl._openId=id;
+  pnl.style.borderColor=hexA(col,.3);pnl.style.background='rgba(8,12,23,.7)';
+  var h='<div class="pvp-inner">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">';
+  h+='<div><div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:'+col+';margin-bottom:3px">'+dept.tierLabel+'</div>';
+  h+='<div style="font-family:Syne,sans-serif;font-size:18px;font-weight:600;color:#EDE8DC">'+dept.icon+' '+dept.name+'</div></div>';
+  h+='<button onclick="var p=document.getElementById(\'pv-domain-panel\');p.classList.remove(\'open\');p._openId=null;" style="background:rgba(255,255,255,.06);border:.5px solid var(--tx3);color:var(--tx2);padding:4px 10px;border-radius:3px;cursor:pointer;font-family:IBM Plex Mono,monospace;font-size:11px">&#x2715;</button>';
+  h+='</div>';
+  h+='<p style="font-size:12.5px;font-weight:300;color:var(--tx2);line-height:1.7;margin-bottom:12px;font-style:italic">'+dept.fn+'</p>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
+  h+='<div><div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:6px;padding-bottom:4px;border-bottom:.5px solid var(--tx3)">Mandate</div>';
+  h+='<p style="font-size:11.5px;font-weight:300;color:var(--tx2);line-height:1.65">'+dept.mandate+'</p></div>';
+  h+='<div><div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);margin-bottom:6px;padding-bottom:4px;border-bottom:.5px solid var(--tx3)">Year 1 Deliverables</div>';
+  h+='<ul style="list-style:none;display:flex;flex-direction:column;gap:4px">'+dept.deliverables.map(function(d){return '<li style="font-size:11px;font-weight:300;color:var(--tx2);line-height:1.45;padding-left:12px;position:relative"><span style="position:absolute;left:0;font-size:9px;color:var(--tx3)">&rarr;</span>'+d+'</li>';}).join('')+'</ul></div>';
+  h+='</div></div>';
+  pnl.innerHTML=h;
+  pnl.classList.add('open');
+  setTimeout(function(){pnl.scrollIntoView({behavior:'smooth',block:'nearest'});},120);
+}
 function buildPillarsCards(){
   if(pvBuilt)return;pvBuilt=true;
   var grid=document.getElementById('pv-cards');
