@@ -11,9 +11,9 @@
 :root{
   --bg:#05080E;--bg2:#080C17;--bg3:#0B1020;--card:#0C1121;
   --gold:#C9993A;--gl:#DFB155;--gdim:rgba(201,153,58,.1);--gmid:rgba(201,153,58,.28);
-  --t1c:#9B8FDC;--t1d:rgba(155,143,220,.1);--t1m:rgba(155,143,220,.28);
-  --t2c:#6298D0;--t2d:rgba(98,152,208,.1);--t2m:rgba(98,152,208,.28);
-  --t3c:#46B4AA;--t3d:rgba(70,180,170,.1);--t3m:rgba(70,180,170,.28);
+  --t1c:#8B7ED8;--t1d:rgba(139,126,216,.1);--t1m:rgba(139,126,216,.28);
+  --t2c:#5A8EC4;--t2d:rgba(90,142,196,.1);--t2m:rgba(90,142,196,.28);
+  --t3c:#3FADA2;--t3d:rgba(63,173,162,.1);--t3m:rgba(63,173,162,.28);
   --tx:#CCC8BE;--tx2:#7A7A6C;--tx3:#3A3A33;--r:7px;--rl:11px;
 }
 body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-weight:300;font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
@@ -38,11 +38,41 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:70
 h1 em{font-style:normal;color:var(--gl)}
 .hdiv{width:44px;height:.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px auto 10px}
 .hsub{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2)}
-.vctrls{display:flex;justify-content:center;gap:6px;margin-bottom:28px;flex-wrap:wrap}
+.vctrls{display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap}
 .vbtn{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 18px;border-radius:4px;cursor:pointer;border:.5px solid var(--tx3);background:transparent;color:var(--tx2);transition:all .18s}
 .vbtn:hover{border-color:var(--tx2);color:var(--tx)}
 .vbtn.active{background:var(--gdim);border-color:var(--gmid);color:var(--gl)}
+.datatool{display:flex;justify-content:center;gap:6px;margin-bottom:22px;flex-wrap:wrap;padding:10px 0;border-top:.5px solid var(--tx3);border-bottom:.5px solid var(--tx3)}
+.dbtn{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:3px;cursor:pointer;border:.5px solid;background:transparent;transition:all .18s;display:flex;align-items:center;gap:5px}
+.dbtn-ex{border-color:rgba(139,126,216,.35);color:var(--t1c)}.dbtn-ex:hover{background:rgba(139,126,216,.08)}
+.dbtn-im{border-color:rgba(90,142,196,.35);color:var(--t2c)}.dbtn-im:hover{background:rgba(90,142,196,.08)}
+.dbtn-pr{border-color:rgba(201,153,58,.35);color:var(--gold)}.dbtn-pr:hover{background:rgba(201,153,58,.08)}
+.dbtn-rs{border-color:rgba(200,90,90,.35);color:#E07878}.dbtn-rs:hover{background:rgba(200,90,90,.08)}
+#file-import{display:none}
+/* PRINT */
+#print-report{display:none}
+@media print{
+  body *{visibility:hidden}
+  #print-report,#print-report *{visibility:visible}
+  #print-report{display:block!important;position:absolute;inset:0;background:#fff;color:#111;padding:28px 36px;font-family:Georgia,serif}
+  .pr-h1{font-size:26px;font-weight:700;margin-bottom:4px;color:#0D1C35}
+  .pr-sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#B8943F;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #ddd}
+  .pr-section{margin-bottom:28px;page-break-inside:avoid}
+  .pr-sh{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#B8943F;margin-bottom:10px;padding-bottom:4px;border-bottom:.5px solid #e0d8c8}
+  .pr-domain{margin-bottom:16px;padding:12px;border:1px solid #e8e0d0;border-radius:4px;page-break-inside:avoid}
+  .pr-dname{font-size:14px;font-weight:700;color:#0D1C35;margin-bottom:3px}
+  .pr-dtier{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#B8943F;margin-bottom:6px}
+  .pr-dman{font-size:11.5px;color:#333;line-height:1.6;margin-bottom:8px}
+  .pr-dl{font-size:10.5px;color:#555;line-height:1.7;padding-left:14px}
+  .pr-owners{margin-top:8px;padding-top:8px;border-top:.5px solid #e0d0b0}
+  .pr-olbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B8943F;margin-bottom:4px}
+  .pr-orow{font-size:11px;color:#333;line-height:1.6}
+  .pr-oname{font-weight:700}.pr-otitle{color:#666}
+  .pr-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .pr-meta{font-size:9px;color:#999;text-align:right;margin-top:24px;padding-top:8px;border-top:.5px solid #eee}
+}
 /* SOLAR */
 #solar-view{position:relative;border-radius:var(--rl);overflow:hidden;border:.5px solid rgba(255,255,255,.05)}
 #solar-canvas{display:block;width:100%}
@@ -67,18 +97,18 @@ h1 em{font-style:normal;color:var(--gl)}
 .dc{background:var(--card);border-radius:var(--r);padding:13px 13px 11px;cursor:pointer;transition:transform .15s,background .15s;border:.5px solid transparent}
 .dc:hover{transform:translateY(-2px)}
 .dc.ec{border-color:var(--gdim)}.dc.ec:hover,.dc.ec.open{border-color:var(--gmid);background:rgba(201,153,58,.05)}
-.dc.c1{border-color:var(--t1d)}.dc.c1:hover,.dc.c1.open{border-color:var(--t1m);background:rgba(155,143,220,.05)}
-.dc.c2{border-color:var(--t2d)}.dc.c2:hover,.dc.c2.open{border-color:var(--t2m);background:rgba(98,152,208,.05)}
-.dc.c3{border-color:var(--t3d)}.dc.c3:hover,.dc.c3.open{border-color:var(--t3m);background:rgba(70,180,170,.05)}
+.dc.c1{border-color:var(--t1d)}.dc.c1:hover,.dc.c1.open{border-color:var(--t1m);background:rgba(139,126,216,.05)}
+.dc.c2{border-color:var(--t2d)}.dc.c2:hover,.dc.c2.open{border-color:var(--t2m);background:rgba(90,142,196,.05)}
+.dc.c3{border-color:var(--t3d)}.dc.c3:hover,.dc.c3.open{border-color:var(--t3m);background:rgba(63,173,162,.05)}
 .dc-icon{font-size:15px;margin-bottom:5px;display:block}
 .dc-name{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:600;color:#DDD8CC;margin-bottom:3px;line-height:1.25}
 .dc-desc{font-size:10.5px;font-weight:300;color:var(--tx3);line-height:1.35;margin-bottom:7px}
 .dc-foot{display:flex;align-items:center;justify-content:space-between}
 .hcbadge{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px}
 .hce{background:var(--gdim);color:var(--gl);border:.5px solid rgba(201,153,58,.2)}
-.hc1{background:var(--t1d);color:var(--t1c);border:.5px solid rgba(155,143,220,.2)}
-.hc2{background:var(--t2d);color:var(--t2c);border:.5px solid rgba(98,152,208,.2)}
-.hc3{background:var(--t3d);color:var(--t3c);border:.5px solid rgba(70,180,170,.2)}
+.hc1{background:var(--t1d);color:var(--t1c);border:.5px solid rgba(139,126,216,.2)}
+.hc2{background:var(--t2d);color:var(--t2c);border:.5px solid rgba(90,142,196,.2)}
+.hc3{background:var(--t3d);color:var(--t3c);border:.5px solid rgba(63,173,162,.2)}
 .dc-tog{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);display:flex;align-items:center;gap:3px}
 .dc:hover .dc-tog,.dc.open .dc-tog{color:var(--tx2)}
 .arr{display:inline-block;transition:transform .2s;font-style:normal}
@@ -87,13 +117,13 @@ h1 em{font-style:normal;color:var(--gl)}
 .subp.open{max-height:1200px;opacity:1}
 .sp-inner{padding:16px 0 6px;position:relative}
 .notch{position:absolute;top:0;left:var(--nx,50%);transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent}
-.ne{border-bottom:8px solid rgba(201,153,58,.25)}.n1{border-bottom:8px solid rgba(155,143,220,.25)}
-.n2{border-bottom:8px solid rgba(98,152,208,.25)}.n3{border-bottom:8px solid rgba(70,180,170,.25)}
+.ne{border-bottom:8px solid rgba(201,153,58,.25)}.n1{border-bottom:8px solid rgba(139,126,216,.25)}
+.n2{border-bottom:8px solid rgba(90,142,196,.25)}.n3{border-bottom:8px solid rgba(63,173,162,.25)}
 .sp-bar{border-radius:var(--rl);padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .sbe{background:rgba(201,153,58,.04);border:.5px solid rgba(201,153,58,.13)}
-.sb1{background:rgba(155,143,220,.04);border:.5px solid rgba(155,143,220,.13)}
-.sb2{background:rgba(98,152,208,.04);border:.5px solid rgba(98,152,208,.13)}
-.sb3{background:rgba(70,180,170,.04);border:.5px solid rgba(70,180,170,.13)}
+.sb1{background:rgba(139,126,216,.04);border:.5px solid rgba(139,126,216,.13)}
+.sb2{background:rgba(90,142,196,.04);border:.5px solid rgba(90,142,196,.13)}
+.sb3{background:rgba(63,173,162,.04);border:.5px solid rgba(63,173,162,.13)}
 /* SUBTEAM CARD */
 .stcard{background:var(--bg3);border-radius:var(--r);padding:12px;border:.5px solid var(--tx3);display:flex;flex-direction:column;gap:8px}
 .stcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
@@ -121,15 +151,17 @@ h1 em{font-style:normal;color:var(--gl)}
 .del-sub{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:11px;padding:0 4px;transition:color .15s;flex-shrink:0}
 .del-sub:hover{color:#E07878}
 /* PANEL */
-.panel{position:fixed;top:0;right:0;width:min(480px,100vw);height:100vh;background:rgba(4,7,14,.97);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:.5px solid transparent;
-  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:200;overflow-y:auto;overscroll-behavior:contain}
-.panel.open{transform:translateX(0)}
-.p-inner{padding:24px 22px 48px;min-height:100%}
-.pclose{position:sticky;top:0;float:right;margin:0 0 6px 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;
-  background:rgba(255,255,255,.06);border:.5px solid var(--tx3);color:var(--tx2);padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .15s}
-.pclose:hover{background:rgba(255,255,255,.1);color:var(--tx)}
-.dp-head{display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:.5px solid var(--tx3);clear:both}
+.panel{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0;border-top:.5px solid transparent}
+.panel.open{max-height:700px;opacity:1}
+.p-inner{padding:20px 0 8px}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.p-col{display:flex;flex-direction:column;gap:12px}
+.pclose{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.05);border:.5px solid var(--tx3);color:var(--tx2);padding:5px 12px;border-radius:4px;cursor:pointer;
+  transition:all .15s;width:fit-content;margin-bottom:4px}
+.pclose:hover{background:rgba(255,255,255,.09);color:var(--tx)}
+@media(max-width:700px){.p-grid{grid-template-columns:1fr}}
+.dp-head{display:flex;align-items:flex-start;gap:12px;padding-bottom:12px;margin-bottom:12px;border-bottom:.5px solid var(--tx3)}
 .dp-icon{font-size:24px;flex-shrink:0;margin-top:3px}
 .dp-tier{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
 .dp-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:600;color:#EDE8DC;line-height:1.2}
@@ -196,14 +228,27 @@ footer{margin-top:60px;padding-top:22px;border-top:.5px solid rgba(201,153,58,.0
   <button class="vbtn" id="btn-list" onclick="switchView('list')">≡&nbsp; Org Chart</button>
   <button class="vbtn" id="btn-pillars" onclick="switchView('pillars')">◈&nbsp; 4 Pillars</button>
 </div>
+<div class="datatool">
+  <button class="dbtn dbtn-ex" onclick="exportData()">&#x2193; Export JSON</button>
+  <button class="dbtn dbtn-im" onclick="document.getElementById('file-import').click()">&#x2191; Import JSON</button>
+  <input type="file" id="file-import" accept=".json" onchange="importData(event)">
+  <button class="dbtn dbtn-pr" onclick="printReport()">&#x2399; Print / PDF Report</button>
+  <button class="dbtn dbtn-rs" onclick="resetData()">&#x21BA; Reset All Data</button>
+</div>
+<div id="print-report"></div>
 <div id="solar-view">
   <canvas id="solar-canvas"></canvas>
   <div class="chint">Click any body · Dashed lines show downstream dependencies · Click empty space to release</div>
   <div class="cleg">
     <div class="cli"><div class="cld" style="background:#C9993A"></div>Executive</div>
-    <div class="cli"><div class="cld" style="background:#9B8FDC"></div>Tier 1 — VUC Core</div>
-    <div class="cli"><div class="cld" style="background:#46B4AA"></div>Tier 3 — Co-governed</div>
-    <div class="cli"><div class="cld" style="background:#6298D0"></div>Tier 2 — External</div>
+    <div class="cli"><div class="cld" style="background:#8B7ED8"></div>Tier 1 — VUC Core</div>
+    <div class="cli"><div class="cld" style="background:#3FADA2"></div>Tier 3 — Co-governed</div>
+    <div class="cli"><div class="cld" style="background:#5A8EC4"></div>Tier 2 — External</div>
+  </div>
+</div>
+<div id="panel" class="panel">
+  <div class="p-inner">
+    <div id="pcontent"></div>
   </div>
 </div>
 <div id="list-view"><div id="list-content"></div></div>
@@ -215,10 +260,10 @@ footer{margin-top:60px;padding-top:22px;border-top:.5px solid rgba(201,153,58,.0
     <div class="cc-hdr">Cross-cutting infrastructure — all 4 pillars</div>
     <p class="cc-p">Owned directly by VUC — provides shared infrastructure for every pillar simultaneously.</p>
     <div class="cc-chips">
-      <span class="cc-chip" style="border-color:rgba(155,143,220,.3);color:var(--t1c)">⊕ Strategy &amp; Direction</span>
-      <span class="cc-chip" style="border-color:rgba(155,143,220,.3);color:var(--t1c)">◈ Intelligence &amp; Data</span>
-      <span class="cc-chip" style="border-color:rgba(98,152,208,.3);color:var(--t2c)">⊡ Governance &amp; Legal</span>
-      <span class="cc-chip" style="border-color:rgba(98,152,208,.3);color:var(--t2c)">◫ Continuity &amp; Knowledge</span>
+      <span class="cc-chip" style="border-color:rgba(139,126,216,.3);color:var(--t1c)">⊕ Strategy &amp; Direction</span>
+      <span class="cc-chip" style="border-color:rgba(139,126,216,.3);color:var(--t1c)">◈ Intelligence &amp; Data</span>
+      <span class="cc-chip" style="border-color:rgba(90,142,196,.3);color:var(--t2c)">⊡ Governance &amp; Legal</span>
+      <span class="cc-chip" style="border-color:rgba(90,142,196,.3);color:var(--t2c)">◫ Continuity &amp; Knowledge</span>
     </div>
   </div>
   <div class="gov">
@@ -235,14 +280,10 @@ footer{margin-top:60px;padding-top:22px;border-top:.5px solid rgba(201,153,58,.0
   <div class="fm">Operational Architecture v4.0 · VUC Strategy Office<br>Restricted / Institutional Confidential</div>
 </footer>
 </div>
-<div id="panel" class="panel">
-  <div class="p-inner">
-    <button class="pclose" onclick="closePanel()">&#x2715; close</button>
-    <div id="pcontent"></div>
-  </div>
-</div>
 <script>
-var TC={exec:'#C9993A',t1:'#9B8FDC',t2:'#6298D0',t3:'#46B4AA'};
+var TC={exec:'#C9993A',t1:'#8B7ED8',t2:'#5A8EC4',t3:'#3FADA2'};
+var PCOLORS=['#D9714E','#5BA87A','#B85C8A','#C8B83A'];
+function decodeEntity(str){var d=document.createElement('div');d.innerHTML=str;return d.textContent||d.innerText||str;}
 var CONNECTIONS={
   exec:['strategy','intelligence','science','narrative'],
   strategy:['operations','technology','capital','governance'],
@@ -268,10 +309,10 @@ operations:{name:'Operations & Integration',icon:'&#8855;',tier:'t3',tierLabel:'
 technology:{name:'Technology & R&D',icon:'&#8853;',tier:'t3',tierLabel:'Tier 3 &mdash; Co-governed',owner:'Co-governed',visibility:'Public',phase:'Needs Funding',hc:'4&#x2013;8 staff',fn:'Manages R&D standards, engineering protocols and IP governance. Science retains validation authority on all public tech claims.',mandate:'Set R&D standards for all partners. Govern IP rights and co-authorship. Validate technology claims jointly with Science.',deliverables:['R&D standards v1.0 &mdash; Month 4','IP governance framework &mdash; Month 4','Digital infrastructure for Intelligence &mdash; Month 3','First co-validated claim &mdash; Month 8'],partners:['UAE technology and engineering companies','International R&D institutions','Science & Research','Intelligence & Data'],kpis:['R&D standards adopted by all partners Month 6','IP governance ratified Month 5','All public tech claims co-validated Year 1','Digital infrastructure 99.5%+ uptime'],sub:[{n:'R&D Standards Unit',hc:'1&#x2013;2',roles:['Engineering and research protocol definition','Technology standards for all partners','Standards version control and compliance']},{n:'IP Governance Office',hc:'1&#x2013;2',roles:['IP rights, co-authorship and licensing','IP audit across all partner outputs','VUC co-authorship enforcement']},{n:'Digital Infrastructure Team',hc:'2&#x2013;4',roles:['Platform, data and systems architecture','Intelligence infrastructure operations','Digital platform for programme operations']},{n:'Innovation Labs Liaison',hc:'1&#x2013;2',roles:['External R&D partnership coordination','Lab and research entity management','Tech claim validation pipeline into Science']}]}
 };
 var PILLARS=[
-  {id:'education',name:'Education & Talent',icon:'&#9672;',color:'#9B8FDC',num:'01',desc:'Building human capital for the emerging space economy.',note:'Science certifies content. Narrative shapes the educational voice. Operations delivers via Welcome Center. Technology enables digital infrastructure.',domains:['science','narrative','operations','technology']},
-  {id:'rd',name:'R&D',icon:'&#8859;',color:'#6298D0',num:'02',desc:'Advancing applied research and IP anchored in the UAE.',note:'Science validates outputs. Technology sets standards and governs IP. Expansion commercialises IP. Intelligence tracks R&D attribution.',domains:['science','technology','expansion','intelligence']},
-  {id:'engagement',name:'Public Engagement',icon:'&#9673;',color:'#C9993A',num:'03',desc:'Creating public moments that define the space narrative globally.',note:'Narrative controls founding story and frames. Ecosystem mobilises partners. Operations executes Founding Signal, Summit and Welcome Center. Institutional manages sovereign engagement.',domains:['narrative','ecosystem','operations','institutional']},
-  {id:'industry',name:'Industry Development',icon:'&#8853;',color:'#46B4AA',num:'04',desc:'Catalysing the commercial space economy and attracting global industry.',note:'Capital orchestrates investment. Ecosystem develops partnerships. Expansion seeds ventures. Institutional opens government access. Governance provides legal infrastructure.',domains:['capital','ecosystem','expansion','institutional','governance']}
+  {id:'education',name:'Education & Talent',icon:'&#9672;',color:'#D9714E',num:'01',desc:'Building human capital for the emerging space economy.',note:'Science certifies content. Narrative shapes the educational voice. Operations delivers via Welcome Center. Technology enables digital infrastructure.',domains:['science','narrative','operations','technology']},
+  {id:'rd',name:'R&D',icon:'&#8859;',color:'#5BA87A',num:'02',desc:'Advancing applied research and IP anchored in the UAE.',note:'Science validates outputs. Technology sets standards and governs IP. Expansion commercialises IP. Intelligence tracks R&D attribution.',domains:['science','technology','expansion','intelligence']},
+  {id:'engagement',name:'Public Engagement',icon:'&#9673;',color:'#B85C8A',num:'03',desc:'Creating public moments that define the space narrative globally.',note:'Narrative controls founding story and frames. Ecosystem mobilises partners. Operations executes Founding Signal, Summit and Welcome Center. Institutional manages sovereign engagement.',domains:['narrative','ecosystem','operations','institutional']},
+  {id:'industry',name:'Industry Development',icon:'&#8853;',color:'#C8B83A',num:'04',desc:'Catalysing the commercial space economy and attracting global industry.',note:'Capital orchestrates investment. Ecosystem develops partnerships. Expansion seeds ventures. Institutional opens government access. Governance provides legal infrastructure.',domains:['capital','ecosystem','expansion','institutional','governance']}
 ];
 var SAVE_KEY='xs_org_v4';
 function loadOwners(){try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}catch(e){return {}}}
@@ -416,24 +457,42 @@ canvas.addEventListener('click',function(e){
   if(hit)selectBody(hit);else closePanel();
 });
 canvas.addEventListener('touchstart',function(e){e.preventDefault();var m=getMouse(e);if(dist(m.x,m.y,cx,cy)<SUN_R+18){selectBody('exec');return;}PLANETS.forEach(function(p){if(dist(m.x,m.y,p.x,p.y)<p.r+18)selectBody(p.id);});},{passive:false});
-function selectBody(id){selectedId=id;buildPanel(id);var panel=document.getElementById('panel');panel.style.borderLeftColor=hexA(TC[D[id]?D[id].tier:'exec']||TC.exec,.3);panel.classList.add('open');}
+function selectBody(id){
+  selectedId=id;buildPanel(id);
+  var panel=document.getElementById('panel');
+  var col=TC[D[id]?D[id].tier:'exec']||TC.exec;
+  panel.style.borderTopColor=hexA(col,.35);
+  panel.classList.add('open');
+  setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'nearest'});},120);
+}
 function closePanel(){selectedId=null;document.getElementById('panel').classList.remove('open');}
 window.addEventListener('resize',function(){if(document.getElementById('solar-view').style.display!=='none')resizeCanvas();else if(document.getElementById('pillars-view').style.display!=='none')drawPillarsCanvas();});
-var VS={Public:{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'},Internal:{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},Confidential:{bg:'rgba(200,90,90,.1)',bd:'rgba(200,90,90,.3)',tx:'#E07878'}};
-var PS={'Activate Now':{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'},'Needs Partners':{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},'Needs Funding':{bg:'rgba(98,152,208,.1)',bd:'rgba(98,152,208,.3)',tx:'#6298D0'}};
-var OS={'VUC Direct':{bg:'rgba(155,143,220,.1)',bd:'rgba(155,143,220,.3)',tx:'#9B8FDC'},'External Lead':{bg:'rgba(98,152,208,.1)',bd:'rgba(98,152,208,.3)',tx:'#6298D0'},'Co-governed':{bg:'rgba(70,180,170,.1)',bd:'rgba(70,180,170,.3)',tx:'#46B4AA'}};
+var VS={Public:{bg:'rgba(63,173,162,.1)',bd:'rgba(63,173,162,.3)',tx:'#3FADA2'},Internal:{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},Confidential:{bg:'rgba(200,90,90,.1)',bd:'rgba(200,90,90,.3)',tx:'#E07878'}};
+var PS={'Activate Now':{bg:'rgba(63,173,162,.1)',bd:'rgba(63,173,162,.3)',tx:'#3FADA2'},'Needs Partners':{bg:'rgba(201,153,58,.1)',bd:'rgba(201,153,58,.3)',tx:'#C9993A'},'Needs Funding':{bg:'rgba(90,142,196,.1)',bd:'rgba(90,142,196,.3)',tx:'#5A8EC4'}};
+var OS={'VUC Direct':{bg:'rgba(139,126,216,.1)',bd:'rgba(139,126,216,.3)',tx:'#8B7ED8'},'External Lead':{bg:'rgba(90,142,196,.1)',bd:'rgba(90,142,196,.3)',tx:'#5A8EC4'},'Co-governed':{bg:'rgba(63,173,162,.1)',bd:'rgba(63,173,162,.3)',tx:'#3FADA2'}};
 function badge(l,s){return '<span class="badge" style="background:'+s.bg+';border-color:'+s.bd+';color:'+s.tx+'">'+l+'</span>';}
 function buildPanel(id){
-  var dept=D[id],col=TC[dept.tier],dim=dept.tier==='exec'?'rgba(201,153,58,.1)':({t1:'rgba(155,143,220,.1)',t2:'rgba(98,152,208,.1)',t3:'rgba(70,180,170,.1)'}[dept.tier]||'rgba(255,255,255,.05)');
-  var h='<div class="dp-head"><span class="dp-icon" style="color:'+col+'">'+dept.icon+'</span>';
+  var dept=D[id],col=TC[dept.tier]||TC.exec;
+  var dim=dept.tier==='exec'?'rgba(201,153,58,.1)':({t1:'rgba(139,126,216,.1)',t2:'rgba(90,142,196,.1)',t3:'rgba(63,173,162,.1)'}[dept.tier]||'rgba(255,255,255,.05)');
+  var conns=CONNECTIONS[id]||[];
+  var connChips=conns.length?'<div class="dp-sec"><div class="dp-sh">Downstream connections</div><div class="dp-chips">'+conns.map(function(cid){var dc=TC[D[cid]?D[cid].tier:'t2']||TC.t2;return '<span class="dp-chip" style="border-color:'+hexA(dc,.4)+';color:'+dc+'">&#8594; '+D[cid].name+'</span>';}).join('')+'</div></div>':'';
+  var h='<button class="pclose" onclick="closePanel()">&#x2715; close panel</button>';
+  h+='<div class="p-grid">';
+  h+='<div class="p-col">';
+  h+='<div class="dp-head"><span class="dp-icon" style="color:'+col+'">'+dept.icon+'</span>';
   h+='<div><div class="dp-tier" style="color:'+col+'">'+dept.tierLabel+'</div><h2 class="dp-title">'+dept.name+'</h2></div></div>';
   h+='<div class="dp-bdg">'+badge(dept.owner,OS[dept.owner]||OS['VUC Direct'])+badge(dept.visibility,VS[dept.visibility]||VS['Internal'])+badge(dept.phase,PS[dept.phase]||PS['Needs Partners'])+'</div>';
   h+='<p class="dp-fn">'+dept.fn+'</p>';
   h+='<div class="dp-hcr" style="background:'+dim+'"><span class="dp-hcl">Team size</span><span class="dp-hcv" style="color:'+col+'">'+dept.hc+'</span></div>';
   h+='<div class="dp-sec"><div class="dp-sh">Mandate</div><p class="dp-mand">'+dept.mandate+'</p></div>';
+  h+=connChips;
+  h+='</div>';
+  h+='<div class="p-col">';
   h+='<div class="dp-sec"><div class="dp-sh">Year 1 Deliverables</div><ul class="dp-list">'+dept.deliverables.map(function(d){return '<li>'+d+'</li>';}).join('')+'</ul></div>';
   h+='<div class="dp-sec"><div class="dp-sh">Required Partners</div><div class="dp-chips">'+dept.partners.map(function(p){return '<span class="dp-chip">'+p+'</span>';}).join('')+'</div></div>';
   h+='<div class="dp-sec"><div class="dp-sh">KPIs</div><ul class="dp-list">'+dept.kpis.map(function(k){return '<li>'+k+'</li>';}).join('')+'</ul></div>';
+  h+='</div>';
+  h+='</div>';
   document.getElementById('pcontent').innerHTML=h;
 }
 var TIERS=[
@@ -548,72 +607,93 @@ function toggleCard(id,card){
 }
 var pc=document.getElementById('pillars-canvas'),pctx=pc.getContext('2d');
 var pvHover=null,pvBuilt=false;
+var TIER_MAP={t1:{label:'Tier 1 — VUC Core',col:TC.t1,short:'T1'},t3:{label:'Tier 3 — Co-governed',col:TC.t3,short:'T3'},t2:{label:'Tier 2 — External',col:TC.t2,short:'T2'}};
+var TKEY=['t1','t3','t2'];
+function getPillarTierDomains(pil,tierKey){return pil.domains.filter(function(did){return D[did]&&D[did].tier===tierKey;});}
 function drawPillarsCanvas(){
   var cont=document.getElementById('pillars-view');if(cont.style.display==='none')return;
-  var w=pc.parentElement.clientWidth,h=Math.min(Math.round(w*.45),380);
+  var w=pc.parentElement.clientWidth;
+  var PAD=20,PILL_W=130,GAP=10,TIER_W=Math.max(140,Math.floor((w-PAD*2-PILL_W-GAP*4)/3));
+  var ROW_H=90,HEADER_H=44,h=HEADER_H+4*ROW_H+PAD*2+20;
   pc.style.width=w+'px';pc.style.height=h+'px';pc.width=w*DPR;pc.height=h*DPR;
   pctx.setTransform(DPR,0,0,DPR,0,0);
   pctx.clearRect(0,0,w,h);
-  var PCOLORS=['#9B8FDC','#6298D0','#C9993A','#46B4AA'];
-  var DNAMES={strategy:'Strategy',intelligence:'Intelligence',science:'Science',narrative:'Narrative',capital:'Capital',institutional:'Institutional',governance:'Governance',ecosystem:'Ecosystem',continuity:'Continuity',expansion:'Expansion',operations:'Operations',technology:'Technology'};
-  var DCOLS={strategy:TC.t1,intelligence:TC.t1,science:TC.t1,narrative:TC.t1,operations:TC.t3,technology:TC.t3,capital:TC.t2,institutional:TC.t2,governance:TC.t2,ecosystem:TC.t2,continuity:TC.t2,expansion:TC.t2};
-  var allDomains=['science','narrative','operations','technology','expansion','intelligence','ecosystem','institutional','capital','governance'];
-  var PW=160,PH=36,pm=18,PY=pm;
-  var pillarBoxes=[];
-  PILLARS.forEach(function(pil,pi){
-    var px=pm,py=PY+pi*(PH+16);
-    pillarBoxes.push({id:pil.id,x:px,y:py,w:PW,h:PH,col:PCOLORS[pi],pil:pil,pi:pi});
+  var colX=[PAD+PILL_W+GAP,PAD+PILL_W+GAP+TIER_W+GAP,PAD+PILL_W+GAP+(TIER_W+GAP)*2];
+  var tierKeys=TKEY;
+  /* Column headers */
+  tierKeys.forEach(function(tk,ci){
+    var tm=TIER_MAP[tk],cx2=colX[ci]+TIER_W/2;
+    pctx.beginPath();pctx.roundRect?pctx.roundRect(colX[ci],PAD,TIER_W,HEADER_H-6,5):pctx.rect(colX[ci],PAD,TIER_W,HEADER_H-6);
+    pctx.fillStyle=hexA(tm.col,.1);pctx.fill();
+    pctx.strokeStyle=hexA(tm.col,.45);pctx.lineWidth=.8;pctx.stroke();
+    pctx.font='500 10px IBM Plex Mono';pctx.textAlign='center';pctx.fillStyle=hexA(tm.col,.9);
+    pctx.fillText(tm.short,cx2,PAD+16);
+    pctx.font='300 9px IBM Plex Sans';pctx.fillStyle=hexA(tm.col,.55);
+    var short2={t1:'VUC Core',t3:'Co-governed',t2:'External'};
+    pctx.fillText(short2[tk],cx2,PAD+30);
   });
-  var totalDomains=allDomains.length;
-  var DW=80,DH=28,dm=6;
-  var domainBoxes={};
-  var startX=PW+pm*3,availH=h-pm*2;
-  allDomains.forEach(function(did,di){
-    var dy=pm+di*(availH/totalDomains);
-    domainBoxes[did]={id:did,x:startX,y:dy,w:DW,h:DH,col:DCOLS[did]||TC.t2};
-  });
+  /* Pillar rows */
   PILLARS.forEach(function(pil,pi){
-    var pb=pillarBoxes[pi];
-    var active=pvHover===null||pvHover===pi;
-    var alpha=active?0.35:0.06;
-    pil.domains.forEach(function(did){
-      var db=domainBoxes[did];if(!db)return;
-      var sx=pb.x+pb.w,sy=pb.y+pb.h/2;
-      var ex=db.x,ey=db.y+db.h/2;
-      var cpx=(sx+ex)/2;
-      pctx.beginPath();pctx.moveTo(sx,sy);pctx.bezierCurveTo(cpx,sy,cpx,ey,ex,ey);
-      pctx.strokeStyle=hexA(pb.col,pvHover===pi?0.6:alpha);
-      pctx.lineWidth=pvHover===pi?1.8:1;pctx.setLineDash([]);pctx.stroke();
+    var rowY=PAD+HEADER_H+pi*ROW_H;
+    var col=PCOLORS[pi];
+    var isHov=pvHover===pi;
+    /* Pillar label */
+    pctx.beginPath();pctx.roundRect?pctx.roundRect(PAD,rowY+6,PILL_W,ROW_H-14,5):pctx.rect(PAD,rowY+6,PILL_W,ROW_H-14);
+    pctx.fillStyle=hexA(col,isHov?.18:.09);pctx.fill();
+    pctx.strokeStyle=hexA(col,isHov?.75:.35);pctx.lineWidth=isHov?1.2:.6;pctx.stroke();
+    pctx.font='600 10px IBM Plex Mono';pctx.textAlign='left';pctx.fillStyle=hexA(col,isHov?1:.65);
+    pctx.fillText(pil.num,PAD+8,rowY+22);
+    pctx.font='500 10.5px Syne';pctx.fillStyle=isHov?'rgba(230,225,210,1)':'rgba(200,196,184,.75)';
+    var words=pil.name.split(' ');
+    if(words.length>2){pctx.fillText(words[0]+' '+words[1],PAD+8,rowY+36);pctx.font='300 9.5px IBM Plex Sans';pctx.fillStyle=hexA(col,isHov?.8:.5);pctx.fillText(words.slice(2).join(' '),PAD+8,rowY+50);}
+    else{pctx.fillText(pil.name,PAD+8,rowY+40);}
+    /* Tier cells */
+    tierKeys.forEach(function(tk,ci){
+      var tm=TIER_MAP[tk];
+      var cellX=colX[ci],cellY=rowY+4,cellW=TIER_W,cellH=ROW_H-8;
+      var doms=getPillarTierDomains(pil,tk);
+      var active=isHov||pvHover===null;
+      /* cell bg */
+      pctx.beginPath();pctx.roundRect?pctx.roundRect(cellX,cellY,cellW,cellH,4):pctx.rect(cellX,cellY,cellW,cellH);
+      pctx.fillStyle=doms.length>0?hexA(tm.col,active?.1:.04):hexA('#ffffff',.02);pctx.fill();
+      pctx.strokeStyle=doms.length>0?hexA(tm.col,active?.35:.12):hexA('#ffffff',.06);pctx.lineWidth=.6;pctx.stroke();
+      /* connector line from pillar to cell */
+      if(doms.length>0&&active){
+        pctx.beginPath();pctx.moveTo(PAD+PILL_W,rowY+ROW_H/2);pctx.lineTo(cellX,rowY+ROW_H/2);
+        pctx.strokeStyle=hexA(col,isHov?.45:.18);pctx.lineWidth=isHov?1.2:.6;pctx.setLineDash([4,4]);pctx.stroke();pctx.setLineDash([]);
+      }
+      if(doms.length===0){
+        pctx.font='300 9px IBM Plex Mono';pctx.textAlign='center';pctx.fillStyle='rgba(80,78,72,.4)';
+        pctx.fillText('—',cellX+cellW/2,cellY+cellH/2+3);
+      } else {
+        var chipH=15,chipPad=5,chipGap=4,startY=cellY+8;
+        doms.forEach(function(did,di){
+          var dname=D[did].name.replace(' & ',' &\n').replace(' and ',' &\n');
+          var short=(did.charAt(0).toUpperCase()+did.slice(1)).substring(0,9);
+          var chipW=cellW-chipPad*2;
+          var chipX=cellX+chipPad,chipY=startY+di*(chipH+chipGap);
+          if(chipY+chipH>cellY+cellH-4)return;
+          pctx.beginPath();pctx.roundRect?pctx.roundRect(chipX,chipY,chipW,chipH,3):pctx.rect(chipX,chipY,chipW,chipH);
+          pctx.fillStyle=hexA(tm.col,active?.16:.06);pctx.fill();
+          pctx.strokeStyle=hexA(tm.col,active?.5:.18);pctx.lineWidth=.5;pctx.stroke();
+          var dname2=D[did].name;if(dname2.length>13)dname2=dname2.substring(0,12)+'…';
+          pctx.font='400 8.5px IBM Plex Mono';pctx.textAlign='left';pctx.fillStyle=hexA(tm.col,active?.9:.35);
+          pctx.fillText(decodeEntity(D[did].icon)+' '+dname2,chipX+4,chipY+chipH/2+3);
+        });
+      }
     });
+    /* Row divider */
+    if(pi<3){pctx.beginPath();pctx.moveTo(PAD,rowY+ROW_H);pctx.lineTo(w-PAD,rowY+ROW_H);pctx.strokeStyle='rgba(80,78,68,.2)';pctx.lineWidth=.5;pctx.stroke();}
   });
-  pillarBoxes.forEach(function(pb,pi){
-    var sel=pvHover===pi,active=pvHover===null||sel;
-    var alpha=active?1:.4;
-    pctx.beginPath();pctx.roundRect?pctx.roundRect(pb.x,pb.y,pb.w,pb.h,5):pctx.rect(pb.x,pb.y,pb.w,pb.h);
-    pctx.fillStyle=hexA(pb.col,sel?.2:.1);pctx.fill();
-    pctx.strokeStyle=hexA(pb.col,sel?.8:.4);pctx.lineWidth=sel?1.2:.6;pctx.stroke();
-    pctx.font='500 10.5px IBM Plex Mono';pctx.textAlign='left';pctx.fillStyle=hexA(pb.col,alpha);
-    pctx.fillText(PILLARS[pi].num,pb.x+8,pb.y+pb.h/2+1);
-    pctx.font='500 11px Syne';pctx.fillStyle='rgba(220,215,200,'+alpha+')';
-    pctx.fillText(PILLARS[pi].name,pb.x+36,pb.y+pb.h/2+4);
-  });
-  Object.values(domainBoxes).forEach(function(db){
-    var active=pvHover===null||PILLARS[pvHover].domains.indexOf(db.id)>=0;
-    var alpha=active?1:.3;
-    pctx.beginPath();pctx.roundRect?pctx.roundRect(db.x,db.y,db.w,db.h,4):pctx.rect(db.x,db.y,db.w,db.h);
-    pctx.fillStyle=hexA(db.col,active?.12:.05);pctx.fill();
-    pctx.strokeStyle=hexA(db.col,active?.55:.2);pctx.lineWidth=.7;pctx.stroke();
-    pctx.font='400 9px IBM Plex Mono';pctx.textAlign='middle';pctx.fillStyle=hexA(db.col,alpha);
-    pctx.textAlign='center';pctx.fillText(DNAMES[db.id]||db.id,db.x+db.w/2,db.y+db.h/2+4);
-  });
-  pctx.font='400 9px IBM Plex Mono';pctx.fillStyle='rgba(120,120,100,.35)';pctx.textAlign='left';
-  pctx.fillText('Pillars',pm,h-6);pctx.fillText('Domains activated',startX,h-6);
+  /* Pillar label column header */
+  pctx.font='300 9px IBM Plex Mono';pctx.fillStyle='rgba(120,115,100,.45)';pctx.textAlign='left';
+  pctx.fillText('Pillars',PAD+4,PAD+14);
 }
 pc.addEventListener('mousemove',function(e){
   var rc=pc.getBoundingClientRect(),mx=(e.clientX-rc.left)*(pc.width/DPR/rc.width),my=(e.clientY-rc.top)*(pc.height/DPR/rc.height);
-  var PW=160,PH=36,pm=18;
+  var PAD=20,PILL_W=130,HEADER_H=44,ROW_H=90;
   var hit=null;
-  PILLARS.forEach(function(_,pi){var py=pm+pi*(PH+16);if(mx>=pm&&mx<=pm+PW&&my>=py&&my<=py+PH)hit=pi;});
+  PILLARS.forEach(function(_,pi){var rowY=PAD+HEADER_H+pi*ROW_H;if(mx>=PAD&&mx<=PAD+PILL_W&&my>=rowY&&my<=rowY+ROW_H)hit=pi;});
   if(hit!==pvHover){pvHover=hit;drawPillarsCanvas();}
 });
 pc.addEventListener('mouseleave',function(){pvHover=null;drawPillarsCanvas();});
@@ -621,21 +701,91 @@ function buildPillarsCards(){
   if(pvBuilt)return;pvBuilt=true;
   var grid=document.getElementById('pv-cards');
   PILLARS.forEach(function(pil,pi){
-    var col=['#9B8FDC','#6298D0','#C9993A','#46B4AA'][pi];
-    var card=document.createElement('div');card.className='pc';
-    card.style.borderColor=hexA(col,.25);
-    var chips=pil.domains.map(function(did){
-      var dc=TC[D[did]?D[did].tier:'t2']||TC.t2;
-      return '<span class="pc-chip" style="background:'+hexA(dc,.09)+';border-color:'+hexA(dc,.3)+';color:'+dc+'">'+D[did].icon+' '+D[did].name+'</span>';
+    var col=PCOLORS[pi];
+    var card=document.createElement('div');card.className='pc';card.style.borderColor=hexA(col,.25);
+    var tierSections=TKEY.map(function(tk){
+      var tm=TIER_MAP[tk];
+      var doms=getPillarTierDomains(pil,tk);
+      if(!doms.length)return '';
+      var chips=doms.map(function(did){var dc=TC[D[did].tier];return '<span class="pc-chip" style="background:'+hexA(dc,.09)+';border-color:'+hexA(dc,.3)+';color:'+dc+'">'+D[did].icon+' '+D[did].name+'</span>';}).join('');
+      return '<div style="margin-bottom:9px"><div class="pc-dh" style="color:'+hexA(tm.col,.7)+'">'+tm.label+'</div><div class="pc-chips">'+chips+'</div></div>';
     }).join('');
     card.innerHTML='<div class="pc-ey" style="color:'+col+'">Pillar '+pil.num+'</div>'
       +'<div class="pc-ti">'+pil.name+'</div>'
       +'<p class="pc-de">'+pil.desc+'</p>'
       +'<p class="pc-note">'+pil.note+'</p>'
-      +'<div class="pc-dh">Activated by</div>'
-      +'<div class="pc-chips">'+chips+'</div>';
+      +tierSections;
     grid.appendChild(card);
   });
+}
+function exportData(){
+  var data={owners:ownersData,customSubs:customSubs,exportedAt:new Date().toISOString(),version:'xs-v4'};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='xperiencespace-org-data-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+}
+function importData(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var data=JSON.parse(ev.target.result);
+      if(data.owners)ownersData=data.owners;
+      if(data.customSubs)customSubs=data.customSubs;
+      saveOwners(ownersData);
+      listBuilt=false;document.getElementById('list-content').innerHTML='';
+      if(document.getElementById('list-view').style.display!=='none')buildListView();
+      alert('Data imported successfully.');
+    }catch(err){alert('Error reading file. Make sure it is a valid XperienceSpace JSON export.');}
+  };
+  reader.readAsText(file);e.target.value='';
+}
+function resetData(){
+  if(!confirm('Reset all owner assignments and custom sub-teams? This cannot be undone.'))return;
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  ownersData={};customSubs={};
+  listBuilt=false;document.getElementById('list-content').innerHTML='';
+  if(document.getElementById('list-view').style.display!=='none')buildListView();
+  alert('All data has been reset.');
+}
+function printReport(){
+  var pr=document.getElementById('print-report');
+  var now=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  var html='<div class="pr-h1">XperienceSpace — Operational Architecture</div>';
+  html+='<div class="pr-sub">Founding Architecture &middot; VUC Strategy Office &middot; '+now+' &middot; Restricted / Institutional Confidential</div>';
+  var tierOrder=[{lbl:'Executive',ids:['exec']},{lbl:'Tier 1 — VUC Core Nucleus',ids:['strategy','intelligence','science','narrative']},{lbl:'Tier 3 — Co-governed (inner delivery orbit)',ids:['operations','technology']},{lbl:'Tier 2 — Externally Populated (outer orbit)',ids:['capital','institutional','governance','ecosystem','continuity','expansion']}];
+  tierOrder.forEach(function(tier){
+    html+='<div class="pr-section"><div class="pr-sh">'+tier.lbl+'</div><div class="pr-2col">';
+    tier.ids.forEach(function(id){
+      var dept=D[id];
+      html+='<div class="pr-domain">';
+      html+='<div class="pr-dname">'+dept.name+'</div>';
+      html+='<div class="pr-dtier">'+dept.owner+' &middot; '+dept.visibility+' &middot; '+dept.phase+'</div>';
+      html+='<div class="pr-dman">'+dept.mandate+'</div>';
+      html+='<div class="pr-dl"><strong>Year 1 Deliverables:</strong><br>'+dept.deliverables.join('<br>')+'</div>';
+      html+='<div class="pr-dl" style="margin-top:6px"><strong>KPIs:</strong><br>'+dept.kpis.join('<br>')+'</div>';
+      /* owners from all sub-teams */
+      var allOwners=[];
+      var subs=customSubs[id]||dept.sub;
+      subs.forEach(function(st,si){
+        var ows=getOwners(id,si).filter(function(o){return o.name&&o.name.trim();});
+        if(ows.length){allOwners.push({sub:customSubs[id]?customSubs[id][si].n:st.n,owners:ows});}
+      });
+      if(allOwners.length){
+        html+='<div class="pr-owners"><div class="pr-olbl">Assignments</div>';
+        allOwners.forEach(function(g){
+          html+='<div style="margin-bottom:4px"><em style="color:#888;font-size:10px">'+g.sub+'</em><br>';
+          g.owners.forEach(function(o){html+='<div class="pr-orow"><span class="pr-oname">'+o.name+'</span>'+(o.title?' &middot; <span class="pr-otitle">'+o.title+'</span>':'')+'</div>';});
+          html+='</div>';
+        });
+        html+='</div>';
+      }
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  html+='<div class="pr-meta">Generated from XperienceSpace Operational Architecture v4.0 &middot; VUC Strategy Office &middot; '+now+'</div>';
+  pr.innerHTML=html;window.print();
 }
 function switchView(v){
   ['solar','list','pillars'].forEach(function(n){
